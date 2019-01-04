@@ -29,7 +29,7 @@ namespace Estim8.Backend.Api
         public void ConfigureContainer(ServiceRegistry services)
         {
             services.AddOptions();
-            services.Configure<PersistenceConfiguration>(nameof(PersistenceConfiguration), Config);
+            services.Configure<PersistenceConfiguration>(Config.GetSection(nameof(PersistenceConfiguration)));
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

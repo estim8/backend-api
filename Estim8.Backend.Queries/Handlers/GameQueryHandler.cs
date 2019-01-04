@@ -39,6 +39,9 @@ namespace Estim8.Backend.Queries.Handlers
         {
             var entity = await _repo.GetById(request.Id);
 
+            if (entity == null)
+                return null;
+            
             return new Game
             {
                 Id = entity.Id

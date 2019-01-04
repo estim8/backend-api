@@ -28,8 +28,16 @@ namespace Estim8.Backend.Persistence.Repositories
 			Logger = logger;
 			DefaultDatabase = client.GetDatabase(config.Value.DefaultDatabase);
 
-			if (!CollectionExists(DefaultDatabase, CollectionName))
-				DefaultDatabase.CreateCollection(CollectionName);
+			if (CollectionExists(DefaultDatabase, CollectionName)) return;
+			
+			DefaultDatabase.CreateCollection(CollectionName);
+				
+			var partition = new BsonDocument {
+				{"shardCollection", $"{DefaultDatabase}.{CollectionName}"},
+				{"key", new BsonDocument {{"_id", "hashed"}}}
+			};
+			var command = new BsonDocumentCommand<BsonDocument>(partition);
+			DefaultDatabase.RunCommand(command);
 		}
 
 
