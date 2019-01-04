@@ -12,9 +12,9 @@ namespace Estim8.Backend.Queries.Handlers
         IQueryHandler<GetAllGames, IEnumerable<Game>>,
         IQueryHandler<GetGameById, Game>
     {
-        private readonly IGameRepository _repo;
+        private readonly IRepository<Persistence.Model.Game> _repo;
 
-        public GameQueryHandler(IGameRepository repo)
+        public GameQueryHandler(IRepository<Persistence.Model.Game> repo)
         {
             _repo = repo;
         }
