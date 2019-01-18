@@ -2,8 +2,7 @@ using System;
 
 namespace Estim8.Backend.Persistence.Model
 {
-    public class Game : IEntity
+    public class Game : Entity
     {
-        public Guid Id { get; }
     }
 }

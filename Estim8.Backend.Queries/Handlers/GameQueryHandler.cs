@@ -9,7 +9,7 @@ using Estim8.Backend.Queries.Model;
 namespace Estim8.Backend.Queries.Handlers
 {
     public class GameQueryHandler : 
-        IQueryHandler<GetAllGames, IEnumerable<Game>>,
+        IQueryHandler<GetGamesByPageNo, IEnumerable<Game>>,
         IQueryHandler<GetGameById, Game>
     {
         private readonly IRepository<Persistence.Model.Game> _repo;
@@ -27,9 +27,9 @@ namespace Estim8.Backend.Queries.Handlers
             });
         }
 
-        public async Task<IEnumerable<Game>> Handle(GetAllGames request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Game>> Handle(GetGamesByPageNo request, CancellationToken cancellationToken)
         {
-            return (await _repo.GetAll(request.Skip, request.Limit)).Select(x => new Game
+            return (await _repo.GetPaged(request.PageNumber, request.PageSize)).Select(x => new Game
             {
                 Id = x.Id
             });
