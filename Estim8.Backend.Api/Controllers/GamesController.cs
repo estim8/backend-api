@@ -1,7 +1,11 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Estim8.Backend.Api.Model;
+using Estim8.Backend.Commands.Commands;
 using Estim8.Backend.Queries;
 using Estim8.Backend.Queries.Model;
+using LamarCompiler.Scenarios;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +31,15 @@ namespace Estim8.Backend.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task CreateGame()
+        public async Task<IActionResult> CreateGame()
         {
-            
+            var id = Guid.NewGuid();
+            var result = await _mediator.Send(new CreateGame {Id = id});
+
+            if (!result.IsSuccess)
+                return StatusCode(500, result.ErrorMessage);
+
+            return CreatedAtAction(nameof(GetGame), new {id = id}, new IdResponse(id));
         }
     }
 }

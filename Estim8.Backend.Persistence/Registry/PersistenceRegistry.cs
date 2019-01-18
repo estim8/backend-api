@@ -17,7 +17,11 @@ namespace Estim8.Backend.Persistence.Registry
                 return new CosmosStoreSettings(opt.DefaultDatabase, opt.CosmosUri, opt.AuthKey);
             });
 
-            For<ICosmosStore<Game>>().Use<CosmosStore<Game>>();
+            //TODO: This should work, but currently it throws an ArgumentException about open generic types.
+            //For(typeof(ICosmosStore<>)).Use(typeof(CosmosStore<>));
+            
+            //For now, register stores individually as below
+            For<ICosmosStore<Game>>().Use<CosmosStore<Game>>().Singleton();
 
             For<ILogger>().Use(Log.Logger);
             Scan(x =>
