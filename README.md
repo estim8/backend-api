@@ -1,4 +1,4 @@
-![Estim8](doc/img/logo-small.png?s=150)
+<img src="https://github.com/estim8/backend-api/raw/master/doc/img/logo-small.png" width="200">
 
 # A free online estimation game for agile teams
 
