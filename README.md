@@ -6,6 +6,10 @@ Estim8 is a free online platform for agile delivery teams to estimate work in an
 
 ![Sample UI](doc/img/sample-ui-cards-shown.png?s=400)
 
+The above is, by the way, a mock-up at the moment ;-)
+
+Read more about our vision and see some more nice mockups in the [Wiki](https://github.com/estim8/backend-api/wiki/Vision)
+
 ## Helping distributed teams
 
 Running estimation sessions with distributed colleagues is hard (or at least a lot harder than it has to be!). With Estim8 we try to create a modern, nice-looking and free tool to easy setup estimation sessions with colleagues across the globe.
