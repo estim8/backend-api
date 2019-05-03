@@ -1,3 +1,5 @@
+[![Build status](https://dev.azure.com/estim8/Estim8.io/_apis/build/status/Estim8.Backend-CI)](https://dev.azure.com/estim8/Estim8.io/_build/latest?definitionId=2)
+
 <img src="https://github.com/estim8/backend-api/raw/master/doc/img/logo-small.png" width="200">
 
 # A free online estimation game for agile teams
