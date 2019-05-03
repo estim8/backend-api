@@ -15,9 +15,9 @@ Running estimation sessions with distributed colleagues is hard (or at least a l
 This repository contains the API component for the Estim8 product. The web front project is hosted in a [separate repo](https://github.com/estim8/web-frontend).
 
 The repo is organized in these folders:
-`/src` is where the source code and solution files goes
-`/tst` is where tests are written
-`/doc` is for documentation and supporting files
+- `/src` is where the source code and solution files goes
+- `/tst` is where tests are written
+- `/doc` is for documentation and supporting files
 
 You can read more about the overall architecture [here](https://github.com/estim8/backend-api/wiki/Architecture).
 
