@@ -28,4 +28,4 @@ You can read more about the overall architecture [here](https://github.com/estim
 
 # Get involved
 
-We are looking for contributors! If you're up for helping on a brand new open source project (with developers new to running open source projects as well :)) please reach out to us!
+We are looking for contributors! Please reach out to us if you're up for helping on a brand new open source project (with developers new to running open source projects as well)!
