@@ -6,10 +6,7 @@ namespace Estim8.Backend.Persistence.Model
     {
         public Guid UserId { get; set; }
         
-        /// <summary>
-        /// Card scale value: [scale-id]/[scale-value]
-        /// </summary>
-        public string Value { get; set; }
+        public double Value { get; set; }
         public DateTimeOffset PlayedTimestamp { get; set; }
     }
 }

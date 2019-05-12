@@ -13,7 +13,7 @@ namespace Estim8.Backend.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GamesController : ControllerBase
+    public partial class GamesController : ControllerBase
     {
         private readonly IMediator _mediator;
 

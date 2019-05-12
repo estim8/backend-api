@@ -6,6 +6,7 @@ namespace Estim8.Backend.Persistence.Model
 {
     public class GameRound
     {
+        public int RoundNumber { get; set; }
         public int RoundVersion { get; set; }
         public DateTimeOffset StartedTimestamp { get; set; }
         public DateTimeOffset EndedTimestamp { get; set; }
