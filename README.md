@@ -38,3 +38,7 @@ You can read more about the overall architecture [here](https://github.com/estim
 We are looking for contributors! Please reach out to us if you're up for helping on a brand new open source project (with developers new to running open source projects as well)!
 
 Have a look at the [Issues list](https://github.com/estim8/backend-api/issues) to see the work that is currently up for grabs. We really welcome any feedback!
+
+## Project roadmap
+
+See the [project roadmap](https://github.com/orgs/estim8/projects/1) on our main project board. 
