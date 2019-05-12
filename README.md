@@ -1,5 +1,10 @@
 [![Build status](https://dev.azure.com/estim8/Estim8.io/_apis/build/status/Estim8.Backend-CI)](https://dev.azure.com/estim8/Estim8.io/_build/latest?definitionId=2)
 
+---
+This documentation (and the Wiki) is work in progress. Hopefully, it won't be that long until it's in a stable state :sweat_smile:
+
+---
+
 <img src="https://github.com/estim8/backend-api/raw/master/doc/img/logo-small.png" width="200">
 
 # A free online estimation game for agile teams
@@ -31,3 +36,9 @@ You can read more about the overall architecture [here](https://github.com/estim
 # Get involved
 
 We are looking for contributors! Please reach out to us if you're up for helping on a brand new open source project (with developers new to running open source projects as well)!
+
+Have a look at the [Issues list](https://github.com/estim8/backend-api/issues) to see the work that is currently up for grabs. We really welcome any feedback!
+
+## Project roadmap
+
+See the [project roadmap](https://github.com/orgs/estim8/projects/1) on our main project board. 
