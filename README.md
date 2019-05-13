@@ -13,7 +13,7 @@ Estim8 is a free online platform for agile delivery teams to estimate work in an
 
 ![Sample UI](doc/img/sample-ui-cards-shown.png?s=400)
 
-The above is, by the way, a mock-up at the moment ;-)
+The above is, by the way, a mock-up at the moment ;-) You can find the full mock-up on our [Sketch cloud](https://sketch.cloud/s/eKvja).
 
 Read more about our vision and see some more nice mockups in the [Wiki](https://github.com/estim8/backend-api/wiki/Vision)
 
