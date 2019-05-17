@@ -1,0 +1,14 @@
+version: '3'
+services:
+  backend-api:
+    container_name: 'estim8-backend'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: ['33000:5000']
+    depends_on: 
+      - 'redis'
+  redis:
+    container_name: 'redis'
+    ports: ['6379']
+    image: 'redis:alpine'
