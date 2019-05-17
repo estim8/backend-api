@@ -15,4 +15,5 @@ RUN dotnet publish ./Estim8.Backend.Api/Estim8.Backend.Api.csproj -o /app/out
 FROM microsoft/dotnet:aspnetcore-runtime AS runtime
 WORKDIR /app
 COPY --from=build-env /app/out .
+ENV ASPNETCORE_URLS=http://+:5000
 ENTRYPOINT ["dotnet", "Estim8.Backend.Api.dll"]
