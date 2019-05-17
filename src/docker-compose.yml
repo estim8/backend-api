@@ -6,9 +6,16 @@ services:
       context: .
       dockerfile: Dockerfile
     ports: ['33000:5000']
+    networks: 
+      - backend
     depends_on: 
       - 'redis'
   redis:
     container_name: 'redis'
     ports: ['6379']
     image: 'redis:alpine'
+    networks: 
+      - backend
+
+networks: 
+  backend:
