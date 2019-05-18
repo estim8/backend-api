@@ -44,7 +44,9 @@ namespace Estim8.Backend.Queries.Handlers
             
             return new Game
             {
-                Id = entity.Id
+                Id = entity.Id,
+                PublicId = entity.PublicId,
+                CreatedTimestamp = entity.CreatedTimestamp
             };        
         }
     }

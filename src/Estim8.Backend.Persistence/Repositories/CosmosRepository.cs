@@ -9,12 +9,12 @@ using Serilog;
 
 namespace Estim8.Backend.Persistence.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
+    public abstract class CosmosRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
 	    protected readonly ICosmosStore<TEntity> Store;
 	    protected readonly ILogger Logger;
         
-	    public Repository(ICosmosStore<TEntity> store, ILogger logger)
+	    public CosmosRepository(ICosmosStore<TEntity> store, ILogger logger)
 	    {
 		    Store = store;
 		    Logger = logger;

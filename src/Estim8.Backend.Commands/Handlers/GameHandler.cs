@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Estim8.Backend.Commands.Commands;
@@ -17,7 +18,7 @@ namespace Estim8.Backend.Commands.Handlers
         
         public async Task<Response> Handle(CreateGame request, CancellationToken cancellationToken)
         {
-            var result = await _gameRepo.Upsert(new Game(request.Id));
+            var result = await _gameRepo.Upsert(new Game(request.Id){CreatedTimestamp = DateTimeOffset.Now, PublicId = request.PublicId});
             
             return Response.FromResult(result);
         }
