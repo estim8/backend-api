@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Estim8.Backend.Persistence.Model;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -24,7 +25,7 @@ namespace Estim8.Backend.Persistence.Repositories
         public async Task<bool> Delete(Guid id)
         {
             Logger.LogInformation("Removing entity by {id}", id);
-            return await Redis.RemoveAsync(id.ToString());
+            return await Redis.RemoveAsync(id.ToString(), CommandFlags.DemandMaster);
         }
 
         public Task<IEnumerable<TEntity>> GetPaged(int page, int pageSize)
