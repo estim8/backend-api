@@ -13,7 +13,7 @@ namespace Estim8.Backend.Persistence.Model
         [ProtoMember(1)]
         public string PublicId { get; set; }
         [ProtoMember(2)]
-        public Guid PointScaleType { get; set; }
+        public Guid CardSetId { get; set; }
         [ProtoMember(3)]
         public DateTimeOffset CreatedTimestamp { get; set; }
         [ProtoMember(4)]
@@ -21,9 +21,13 @@ namespace Estim8.Backend.Persistence.Model
         [ProtoMember(5)]
         public DateTimeOffset EndedTimestamp { get; set; }
 
-        public IEnumerable<Player> Players { get; set; }
+        [ProtoMember(6)]
+        public IEnumerable<Entity> Players { get; set; }
 
-        public IEnumerable<GameRound> Rounds { get; set; }
+        [ProtoMember(7)]
+        public IEnumerable<Entity> Rounds { get; set; }
+        
+        [ProtoMember(8)] public string Secret { get; set; }
         
         public Game(Guid id)
         {

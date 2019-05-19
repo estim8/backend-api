@@ -2,11 +2,10 @@ using System;
 
 namespace Estim8.Backend.Persistence.Model
 {
-    public class PlayedCard
+    public class PlayedCard : Entity
     {
-        public Guid UserId { get; set; }
-        
-        public double Value { get; set; }
+        public Guid PlayerId { get; set; }
+        public Guid CardSetId { get; set; }
         public DateTimeOffset PlayedTimestamp { get; set; }
     }
 }

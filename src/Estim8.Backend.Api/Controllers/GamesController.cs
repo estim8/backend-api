@@ -30,7 +30,7 @@ namespace Estim8.Backend.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> CreateGame()
+        public async Task<IActionResult> CreateGame(CreateGameRequest request)
         {
             var id = Guid.NewGuid();
             var result = await _mediator.Send(new CreateGame {Id = id});
