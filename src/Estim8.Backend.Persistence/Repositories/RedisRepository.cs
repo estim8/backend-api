@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Estim8.Backend.Persistence.Model;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using StackExchange.Redis.Extensions.Core.Abstractions;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Estim8.Backend.Persistence.Repositories
 {
@@ -11,14 +13,17 @@ namespace Estim8.Backend.Persistence.Repositories
     {
         protected IRedisDatabase Redis;
         protected ILogger Logger;
-        public RedisRepository(IRedisCacheClient redisCacheClient, ILogger logger)
+        public RedisRepository(IRedisCacheClient redisCacheClient, ILoggerFactory loggerFactory)
         {
             Redis = redisCacheClient.GetDbFromConfiguration();
-            Logger = logger;
+            Logger = loggerFactory.CreateLogger<RedisRepository<TEntity>>();
+            
+            Logger.LogInformation("Redis {EntityName} repository for ready. Using database {database}.", typeof(TEntity).Name, Redis.Database.Database);
         }
         
         public async Task<bool> Delete(Guid id)
         {
+            Logger.LogInformation("Removing entity by {id}", id);
             return await Redis.RemoveAsync(id.ToString());
         }
 
@@ -34,11 +39,13 @@ namespace Estim8.Backend.Persistence.Repositories
 
         public async Task<TEntity> GetById(Guid id)
         {
+            Logger.LogInformation("Fetching entity by {id}", id);
             return await Redis.GetAsync<TEntity>(id.ToString());
         }
 
         public async Task<bool> Upsert(TEntity entity)
         {
+            Logger.LogInformation("Upserting {entity} by {id}", entity, entity.Id);
             return await Redis.AddAsync(entity.Id.ToString(), entity);
         }
     }

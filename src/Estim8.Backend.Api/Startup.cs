@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Estim8.Backend.Persistence;
 using Lamar;
@@ -11,17 +12,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using StackExchange.Redis.Extensions.Core.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Estim8.Backend.Api
 {
     public class Startup
     {
-        public IConfiguration Config { get; }
+        private readonly IHostingEnvironment _env;
+        private readonly IConfiguration _config;
+        private readonly ILogger _logger;
 
-        public Startup(IConfiguration config)
+        public Startup(IHostingEnvironment env, IConfiguration config, ILogger<Startup> logger)
         {
-            Config = config;
+            _env = env;
+            _config = config;
+            _logger = logger;
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -29,7 +36,7 @@ namespace Estim8.Backend.Api
         public void ConfigureContainer(ServiceRegistry services)
         {
             services.AddOptions();
-            services.Configure<PersistenceConfiguration>(Config.GetSection(nameof(PersistenceConfiguration)));
+            services.Configure<PersistenceConfiguration>(_config.GetSection(nameof(PersistenceConfiguration)));
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -46,7 +53,9 @@ namespace Estim8.Backend.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        {   
+            _logger.LogInformation("Starting application in {env}", _env.EnvironmentName);
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

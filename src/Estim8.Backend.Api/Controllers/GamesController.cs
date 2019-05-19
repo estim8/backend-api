@@ -5,7 +5,6 @@ using Estim8.Backend.Api.Model;
 using Estim8.Backend.Commands.Commands;
 using Estim8.Backend.Queries;
 using Estim8.Backend.Queries.Model;
-using LamarCompiler.Scenarios;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
