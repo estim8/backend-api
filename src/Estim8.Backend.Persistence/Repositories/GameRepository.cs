@@ -1,4 +1,3 @@
-using Cosmonaut;
 using Estim8.Backend.Persistence.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

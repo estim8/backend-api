@@ -8,8 +8,6 @@ namespace Estim8.Backend.Persistence.Model
     [ProtoContract]
     public class Game : Entity
     {
-        // Some reference on datamodelling on CosmosDB: https://docs.microsoft.com/en-us/azure/cosmos-db/modeling-data
-        
         [ProtoMember(1)]
         public string PublicId { get; set; }
         [ProtoMember(2)]

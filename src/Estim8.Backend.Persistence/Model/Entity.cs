@@ -1,14 +1,11 @@
 using System;
-using Cosmonaut.Attributes;
-using Microsoft.Azure.Documents;
-using Newtonsoft.Json;
+using ProtoBuf;
 
 namespace Estim8.Backend.Persistence.Model
 {
     public class Entity
     {
-        [CosmosPartitionKey]
-        [JsonProperty("id")]
+        [ProtoMember(0)]
         public Guid Id { get; protected set; }
     }
 }
