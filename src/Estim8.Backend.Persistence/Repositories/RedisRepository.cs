@@ -47,7 +47,7 @@ namespace Estim8.Backend.Persistence.Repositories
         public async Task<bool> Upsert(TEntity entity)
         {
             Logger.LogInformation("Upserting {entity} by {id}", entity, entity.Id);
-            return await Redis.AddAsync(entity.Id.ToString(), entity);
+            return await Redis.AddAsync(entity.Id.ToString(), entity,flag: CommandFlags.DemandMaster);
         }
     }
 }
