@@ -17,20 +17,15 @@ namespace Estim8.Backend.Persistence.UnitTests
 {
     public class GameRepository_Should
     {
-        [Fact]
-        public async Task Delete_A_Game()
+        [Theory, AutoMoqData]
+        public async Task Delete_A_Game(Guid gameId, [Frozen]Mock<IRedisDatabase> dbMock, [Frozen]Mock<IRedisCacheClient> cacheMock, Fixture fixture)
         {
             //Arrange
-            var fixture = new Fixture().Customize(new AutoMoqCustomization());
-
-            var gameId = fixture.Create<Guid>();
-            var cacheMock = fixture.Freeze<Mock<IRedisCacheClient>>();
-            var dbMock = fixture.Freeze<Mock<IRedisDatabase>>();
             dbMock.Setup(x => x.RemoveAsync(It.IsAny<string>(), It.IsAny<CommandFlags>())).ReturnsAsync(true);
             cacheMock.Setup(x => x.GetDbFromConfiguration()).Returns(dbMock.Object);
 
             var sut = fixture.Create<GameRepository>();
-            
+
             //Act
             var answer = await sut.Delete(gameId);
 
@@ -39,14 +34,10 @@ namespace Estim8.Backend.Persistence.UnitTests
             dbMock.Verify(x => x.RemoveAsync(gameId.ToString(), CommandFlags.DemandMaster), Times.Once, "All Redis write operations must be done with DemandMaster flag");
         }
 
-        [Theory(Skip = "Skipped until Rider/ReSharper fix for AutoData attributes is released"), AutoMoqData]
-        public async Task Create_A_Game(Game game)
+        [Theory, AutoMoqData]
+        public async Task Create_A_Game(Game game, [Frozen]Mock<IRedisDatabase> dbMock, [Frozen]Mock<IRedisCacheClient> cacheMock, Fixture fixture)
         {
             //Arrange
-            var fixture = new Fixture().Customize(new AutoMoqCustomization());
-
-            var cacheMock = fixture.Freeze<Mock<IRedisCacheClient>>();
-            var dbMock = fixture.Freeze<Mock<IRedisDatabase>>();
             dbMock.Setup(x => x.AddAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<When>(), It.IsAny<CommandFlags>())).ReturnsAsync(true);
             cacheMock.Setup(x => x.GetDbFromConfiguration()).Returns(dbMock.Object);
 

@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Api", "Estim8.Backend.Api\Estim8.Backend.Api.csproj", "{EDE22547-A6AA-491C-927A-29D6E03F4AB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Api", "src\Estim8.Backend.Api\Estim8.Backend.Api.csproj", "{EDE22547-A6AA-491C-927A-29D6E03F4AB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Queries", "Estim8.Backend.Queries\Estim8.Backend.Queries.csproj", "{2C21104B-33DA-4C4A-8577-878F294247BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Queries", "src\Estim8.Backend.Queries\Estim8.Backend.Queries.csproj", "{2C21104B-33DA-4C4A-8577-878F294247BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Commands", "Estim8.Backend.Commands\Estim8.Backend.Commands.csproj", "{62A4A1CB-78DB-42B4-8D74-06BDBDFA5785}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Commands", "src\Estim8.Backend.Commands\Estim8.Backend.Commands.csproj", "{62A4A1CB-78DB-42B4-8D74-06BDBDFA5785}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Persistence", "Estim8.Backend.Persistence\Estim8.Backend.Persistence.csproj", "{9A4D91E1-9B52-46D9-A42F-7FB5610446D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Persistence", "src\Estim8.Backend.Persistence\Estim8.Backend.Persistence.csproj", "{9A4D91E1-9B52-46D9-A42F-7FB5610446D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Messaging", "Estim8.Messaging\Estim8.Messaging.csproj", "{CCFE8F92-6791-428E-A9E7-08ECFC90B438}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Messaging", "src\Estim8.Messaging\Estim8.Messaging.csproj", "{CCFE8F92-6791-428E-A9E7-08ECFC90B438}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Persistence.UnitTests", "..\tst\Estim8.Backend.Persistence.UnitTests\Estim8.Backend.Persistence.UnitTests.csproj", "{F574C927-4CEA-4106-B027-2A49648DF930}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Persistence.UnitTests", "tst\Estim8.Backend.Persistence.UnitTests\Estim8.Backend.Persistence.UnitTests.csproj", "{F574C927-4CEA-4106-B027-2A49648DF930}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.TestInfrastructure", "..\tst\Estim8.TestInfrastructure\Estim8.TestInfrastructure.csproj", "{99471C8D-2A9F-4038-8950-42300FD45FF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.TestInfrastructure", "tst\Estim8.TestInfrastructure\Estim8.TestInfrastructure.csproj", "{99471C8D-2A9F-4038-8950-42300FD45FF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
