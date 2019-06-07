@@ -1,3 +1,4 @@
+using Estim8.Backend.Persistence.Decorators;
 using Estim8.Backend.Persistence.Repositories;
 using Lamar;
 using Microsoft.Extensions.Options;
@@ -35,6 +36,8 @@ namespace Estim8.Backend.Persistence.Registry
             });
             
             ProtoBuf.ProtoBufConfig.Configure();
+            
+            For(typeof(IRepository<>)).DecorateAllWith(typeof(RepositoryLogDecorator<>));
         }
     }
 }
