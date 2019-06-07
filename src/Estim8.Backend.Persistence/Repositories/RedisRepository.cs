@@ -24,7 +24,6 @@ namespace Estim8.Backend.Persistence.Repositories
         
         public async Task<bool> Delete(Guid id)
         {
-            Logger.LogInformation("Removing entity by {id}", id);
             return await Redis.RemoveAsync(id.ToString(), CommandFlags.DemandMaster);
         }
 
@@ -40,13 +39,11 @@ namespace Estim8.Backend.Persistence.Repositories
 
         public async Task<TEntity> GetById(Guid id)
         {
-            Logger.LogInformation("Fetching entity by {id}", id);
             return await Redis.GetAsync<TEntity>(id.ToString());
         }
 
         public async Task<bool> Upsert(TEntity entity)
         {
-            Logger.LogInformation("Upserting {entity} by {id}", entity, entity.Id);
             return await Redis.AddAsync(entity.Id.ToString(), entity,flag: CommandFlags.DemandMaster);
         }
     }

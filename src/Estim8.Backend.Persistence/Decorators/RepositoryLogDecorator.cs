@@ -7,22 +7,26 @@ using Microsoft.Extensions.Logging;
 
 namespace Estim8.Backend.Persistence.Decorators
 {
-    public class RepositoryLogDecorator<TEntity> : IRepository<TEntity> where TEntity : Entity
+    
+    public class RepositoryLogDecorator<TEntity> : Decorator<IRepository<TEntity>>, IRepository<TEntity> where TEntity : Entity
     {
-        private readonly IRepository<TEntity> _decorated;
-        private readonly ILogger<IRepository<TEntity>> _logger;
-
-        public RepositoryLogDecorator(IRepository<TEntity> decorated, ILogger<IRepository<TEntity>> logger)
+        public RepositoryLogDecorator(IRepository<TEntity> decorated, ILogger<IRepository<TEntity>> logger) : base(decorated, logger)
         {
-            _decorated = decorated;
-            _logger = logger;
         }
-        
         
         public async Task<bool> Delete(Guid id)
         {
-            _logger.LogInformation("Called delete");
-            return await _decorated.Delete(id);
+            try
+            {
+
+                Log.LogInformation("Trying to delete entity of {EntityType} with {Id}", typeof(TEntity).Name, id);
+                return await Decorated.Delete(id);
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e, "Exception when deleting entity with {Id}", id);
+                throw;
+            }
         }
 
         public Task<IEnumerable<TEntity>> GetPaged(int page, int pageSize)
@@ -35,14 +39,34 @@ namespace Estim8.Backend.Persistence.Decorators
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetById(Guid id)
+        public async Task<TEntity> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Log.LogDebug("Trying to fetch entity of {EntityType} with {Id}", typeof(TEntity).Name, id);
+                return await Decorated.GetById(id);
+
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e, "Exception when fetching entity with {Id}", id);
+                throw;
+            }
         }
 
-        public Task<bool> Upsert(TEntity entity)
+        public async Task<bool> Upsert(TEntity entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Log.LogDebug("Trying to upsert {Entity} with {Id}", entity, entity.Id);
+                return await Decorated.Upsert(entity);
+
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e, "Exception when upserting {Entity} with {Id}", entity, entity.Id);
+                throw;
+            }
         }
     }
 }
