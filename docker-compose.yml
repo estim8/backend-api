@@ -7,15 +7,15 @@ services:
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE__RedisConfiguration__Hosts__0__Host=redis
-      - ASPNETCORE__RedisConfiguration__Hosts__0__Port=6379
+      - PersistenceConfiguration:RedisConfiguration:Hosts:0:Host=estim8-redis
+      - PersistenceConfiguration:RedisConfiguration:Hosts:0:Port=6379
     ports: ['33000:5000']
     networks: 
       - backend
     depends_on: 
       - 'redis'
   redis:
-    container_name: 'redis'
+    container_name: 'estim8-redis'
     ports: ['6379']
     image: 'redis:alpine'
     networks: 

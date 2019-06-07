@@ -18,8 +18,9 @@ namespace Estim8.Backend.Persistence.Repositories
         {
             Redis = redisCacheClient.GetDbFromConfiguration();
             Logger = loggerFactory.CreateLogger<RedisRepository<TEntity>>();
-            
-            Logger.LogInformation("Redis {EntityName} repository for ready. Using database {database}.", typeof(TEntity).Name, Redis.Database.Database);
+
+            Logger.LogInformation("Redis {EntityName} repository ready. Using database {database}.", typeof(TEntity).Name, Redis.Database.Database);
+
         }
         
         public async Task<bool> Delete(Guid id)

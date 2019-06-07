@@ -18,13 +18,12 @@ namespace Estim8.Backend.Persistence.Decorators
         {
             try
             {
-
-                Log.LogInformation("Trying to delete entity of {EntityType} with {Id}", typeof(TEntity).Name, id);
+                Log.LogInformation("Trying to delete entity of {EntityType} with id '{Id}'", typeof(TEntity).Name, id);
                 return await Decorated.Delete(id);
             }
             catch (Exception e)
             {
-                Log.LogError(e, "Exception when deleting entity with {Id}", id);
+                Log.LogError(e, "Exception when deleting entity with id '{Id}'", id);
                 throw;
             }
         }
@@ -43,13 +42,13 @@ namespace Estim8.Backend.Persistence.Decorators
         {
             try
             {
-                Log.LogDebug("Trying to fetch entity of {EntityType} with {Id}", typeof(TEntity).Name, id);
+                Log.LogDebug("Trying to fetch entity of {EntityType} with id '{Id}'", typeof(TEntity).Name, id);
                 return await Decorated.GetById(id);
 
             }
             catch (Exception e)
             {
-                Log.LogError(e, "Exception when fetching entity with {Id}", id);
+                Log.LogError(e, "Exception when fetching entity with id '{Id}'", id);
                 throw;
             }
         }
@@ -58,13 +57,13 @@ namespace Estim8.Backend.Persistence.Decorators
         {
             try
             {
-                Log.LogDebug("Trying to upsert {Entity} with {Id}", entity, entity.Id);
+                Log.LogDebug("Trying to upsert {Entity} with id '{Id}'", entity, entity.Id);
                 return await Decorated.Upsert(entity);
 
             }
             catch (Exception e)
             {
-                Log.LogError(e, "Exception when upserting {Entity} with {Id}", entity, entity.Id);
+                Log.LogError(e, "Exception when upserting {Entity} with id '{Id}'", entity, entity.Id);
                 throw;
             }
         }
