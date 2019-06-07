@@ -34,7 +34,7 @@ You can read more about the overall architecture [here](https://github.com/estim
 
 # How to run the code
 
-Running the code is really easy. Just clone the repo and run `docker-compose -f ./src/docker-compose.yml up` from a terminal.
+Running the code is really easy. Just clone the repo and run `docker-compose -f ./docker-compose.yml up` from a terminal.
 This will build and spin up the API in a container and Redis in another. If you have [Docker](https://www.docker.com/get-started) installed, that is.
 
 The API is then accessible on `http://localhost:33000/swagger`
