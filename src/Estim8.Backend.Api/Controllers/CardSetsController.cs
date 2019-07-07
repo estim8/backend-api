@@ -6,9 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Estim8.Backend.Api.Controllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Types of cards (cardsets) used in games
+    /// </summary>
+    [Route("api/cardsets")]
     public class CardSetsController : ControllerBase
     {
+        /// <summary>
+        /// Get all available cardsets
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetCardSets()
@@ -16,9 +23,14 @@ namespace Estim8.Backend.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Get a specific cardset
+        /// </summary>
+        /// <param name="setId"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetCard(Guid id)
+        [Route("{setId}")]
+        public async Task<IActionResult> GetCardSet(Guid setId)
         {
             return Ok();
         }
