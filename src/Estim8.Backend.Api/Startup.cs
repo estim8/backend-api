@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using Estim8.Backend.Persistence;
 using Lamar;
@@ -41,7 +43,16 @@ namespace Estim8.Backend.Api
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "Estim8 API", Version = "v1"}); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info {Title = "Estim8 API", Version = "v1"}); 
+                
+                c.DescribeAllEnumsAsStrings();
+                
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             services.AddCors(x => x.AddDefaultPolicy(new CorsPolicy
             {
                 Origins = {"*"},
