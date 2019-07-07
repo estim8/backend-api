@@ -28,16 +28,6 @@ namespace Estim8.Backend.Persistence.Decorators
             }
         }
 
-        public Task<IEnumerable<TEntity>> GetPaged(int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ResultPage<TEntity>> GetPaged(string pagingToken, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<TEntity> GetById(Guid id)
         {
             try
