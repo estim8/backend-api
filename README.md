@@ -39,6 +39,10 @@ This will build and spin up the API in a container and Redis in another. If you 
 
 The API is then accessible on `http://localhost:33000/swagger`
 
+## Latest build
+
+The latest successful build is automatically deployed in QA and is accessible at https://api-qa.estim8.io/swagger
+
 # Get involved
 
 We are looking for contributors! Please reach out to us if you're up for helping on a brand new open source project (with developers new to running open source projects as well)!
