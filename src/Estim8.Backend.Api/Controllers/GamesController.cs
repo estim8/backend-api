@@ -45,12 +45,12 @@ namespace Estim8.Backend.Api.Controllers
         public async Task<IActionResult> CreateGame(CreateGameRequest request)
         {
             var id = Guid.NewGuid();
-            var result = await _mediator.Send(new CreateGame {Id = id});
+            var result = await _mediator.Send(new CreateGame {Id = id, Secret = request.Secret, CardsetId = request.CardSetId});
 
             if (!result.IsSuccess)
                 return StatusCode(500, result.ErrorMessage);
 
-            return CreatedAtAction(nameof(GetGame), new {id = id}, new IdResponse(id));
+            return CreatedAtAction(nameof(GetGame), new {gameId = id}, new IdResponse(id));
         }
 
         /// <summary>
