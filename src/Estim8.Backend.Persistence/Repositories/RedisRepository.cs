@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CachingFramework.Redis;
+using CachingFramework.Redis.Contracts;
 using Estim8.Backend.Persistence.Model;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -12,30 +14,40 @@ namespace Estim8.Backend.Persistence.Repositories
 {
     public abstract class RedisRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        protected IRedisDatabase Redis;
+        protected IContext Redis;
         protected ILogger Logger;
-        public RedisRepository(IRedisCacheClient redisCacheClient, ILoggerFactory loggerFactory)
+        protected readonly string HashSetKey;
+        public RedisRepository(IContext redisContext, ILoggerFactory loggerFactory)
         {
-            Redis = redisCacheClient.GetDbFromConfiguration();
+            Redis = redisContext;
             Logger = loggerFactory.CreateLogger<RedisRepository<TEntity>>();
 
-            Logger.LogInformation("Redis {EntityName} repository ready. Using database {database}.", typeof(TEntity).Name, Redis.Database.Database);
+            HashSetKey = $"{typeof(TEntity).Name.ToLowerInvariant()}:hash";
+            
+            var redis = (RedisContext) Redis;
+            Logger.LogInformation("Redis {EntityName} repository ready. Connection is {ConnectionStatus}.", typeof(TEntity).Name, redis.GetConnectionMultiplexer().IsConnected);
+        }
 
+        protected string ToKey(Guid id, string collectionType = null)
+        {
+            return collectionType == null
+                ? $"{typeof(TEntity).Name.ToLower()}:id:{id.ToString()}"
+                : $"{collectionType}:id:{id.ToString()}";
         }
         
-        public async Task<bool> Delete(Guid id)
+        public virtual async Task<bool> Delete(Guid id)
         {
-            return await Redis.RemoveAsync(id.ToString(), CommandFlags.DemandMaster);
+            return await Redis.Cache.RemoveHashedAsync(HashSetKey, ToKey(id));
         }
 
-        public async Task<TEntity> GetById(Guid id)
+        public virtual async Task<TEntity> GetById(Guid id)
         {
-            return await Redis.GetAsync<TEntity>(id.ToString());
+            return await Redis.Cache.GetHashedAsync<TEntity>(HashSetKey, ToKey(id));
         }
 
-        public async Task<bool> Upsert(TEntity entity)
+        public virtual async Task Upsert(TEntity entity)
         {
-            return await Redis.AddAsync(entity.Id.ToString(), entity,flag: CommandFlags.DemandMaster);
+            await Redis.Cache.SetHashedAsync(HashSetKey, ToKey(entity.Id), entity);
         }
     }
 }

@@ -9,6 +9,6 @@ namespace Estim8.Backend.Persistence.Repositories
     {
         Task<bool> Delete(Guid id);
         Task<TEntity> GetById(Guid id);
-        Task<bool> Upsert(TEntity entity);
+        Task Upsert(TEntity entity);
     }
 }
