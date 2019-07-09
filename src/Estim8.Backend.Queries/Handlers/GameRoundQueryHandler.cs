@@ -1,7 +1,8 @@
+using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Estim8.Backend.Persistence.Model;
 using Estim8.Backend.Persistence.Repositories;
+using Estim8.Backend.Queries.Model;
 using Estim8.Backend.Queries.Queries;
 
 namespace Estim8.Backend.Queries.Handlers
@@ -17,12 +18,36 @@ namespace Estim8.Backend.Queries.Handlers
         
         public async Task<GameRound> Handle(GetGameRoundById request, CancellationToken cancellationToken)
         {
-            return await _repo.GetById(request.GameId, request.RoundId);
+            var round = await _repo.GetById(request.GameId, request.RoundId);
+            
+            if (round == null)
+                return null;
+
+            return new GameRound
+            {
+                Id = round.Id,
+                RoundVersion = round.RoundVersion,
+                StartedTimestamp = round.StartedTimestamp,
+                EndedTimestamp = round.EndedTimestamp,
+                Subject = round.Subject
+            };
         }
 
         public async Task<GameRound> Handle(GetCurrentGameRound request, CancellationToken cancellationToken)
         {
-            return await _repo.GetCurrentRound(request.GameId);
+            var round = await _repo.GetCurrentRound(request.GameId);
+
+            if (round == null)
+                return null;
+            
+            return new GameRound
+            {
+                Id = round.Id,
+                RoundVersion = round.RoundVersion,
+                StartedTimestamp = round.StartedTimestamp,
+                EndedTimestamp = round.EndedTimestamp,
+                Subject = round.Subject
+            };
         }
     }
 }

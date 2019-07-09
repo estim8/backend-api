@@ -1,5 +1,5 @@
 using System;
-using Estim8.Backend.Persistence.Model;
+using Estim8.Backend.Queries.Model;
 using MediatR;
 
 namespace Estim8.Backend.Queries.Queries
