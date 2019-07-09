@@ -5,6 +5,7 @@ using Estim8.Backend.Commands.Commands;
 using Estim8.Backend.Queries;
 using Estim8.Backend.Queries.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estim8.Backend.Api.Controllers
@@ -29,8 +30,9 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="gameId">An active game ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("{gameId}")]
-        public async Task<Game> GetGame(Guid gameId)
+        public async Task<ActionResult<Game>> GetGame(Guid gameId)
         {
             return await _mediator.Send(new GetGameById(gameId));
         }
@@ -41,14 +43,16 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("")]
-        public async Task<IActionResult> CreateGame(CreateGameRequest request)
+        public async Task<ActionResult<IdResponse>> CreateGame(CreateGameRequest request)
         {
             var id = Guid.NewGuid();
             var result = await _mediator.Send(new CreateGame {Id = id, Secret = request.Secret, CardsetId = request.CardSetId});
 
             if (!result.IsSuccess)
-                return StatusCode(500, result.ErrorMessage);
+                return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
 
             return CreatedAtAction(nameof(GetGame), new {gameId = id}, new IdResponse(id));
         }
@@ -65,7 +69,7 @@ namespace Estim8.Backend.Api.Controllers
         [Route("{gameId}/end")]
         public async Task<IActionResult> EndGame(Guid gameId)
         {
-            return Ok();
+            return StatusCode(StatusCodes.Status501NotImplemented);
         }
     }
 }

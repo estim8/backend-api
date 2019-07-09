@@ -2,8 +2,10 @@ using System;
 using System.Threading.Tasks;
 using Estim8.Backend.Api.Model;
 using Estim8.Backend.Commands.Commands;
+using Estim8.Backend.Queries.Model;
 using Estim8.Backend.Queries.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estim8.Backend.Api.Controllers
@@ -33,8 +35,9 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="request">The round to add</param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [Route("{gameId:guid}/rounds")]
-        public async Task<IActionResult> AddRound(Guid gameId, AddGameRoundRequest request)
+        public async Task<ActionResult<IdResponse>> AddRound(Guid gameId, AddGameRoundRequest request)
         {
             var roundId = Guid.NewGuid();
             await _mediator.Send(new AddGameRound
@@ -55,10 +58,17 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="roundId">A game round in the game</param>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("{gameId:guid}/rounds/{roundId:guid}")]
-        public async Task<IActionResult> GetRound(Guid gameId, Guid roundId)
+        public async Task<ActionResult<GameRound>> GetRound(Guid gameId, Guid roundId)
         {
-            return Ok(await _mediator.Send(new GetGameRoundById(gameId, roundId)));
+            var round = await _mediator.Send(new GetGameRoundById(gameId, roundId));
+
+            if (round == null)
+                return NotFound();
+
+            return round;
         }
 
         /// <summary>
@@ -71,7 +81,7 @@ namespace Estim8.Backend.Api.Controllers
         [Route("{gameId:guid}/rounds/{roundId:guid}/stats")]
         public async Task<IActionResult> GetRoundStats(Guid gameId, Guid roundId)
         {
-            return Ok();
+            return StatusCode(StatusCodes.Status501NotImplemented);
         }
 
         /// <summary>
@@ -80,10 +90,16 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="gameId">An active game ID</param>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("{gameId:guid}/rounds/current")]
-        public async Task<IActionResult> GetCurrentRound(Guid gameId)
+        public async Task<ActionResult<GameRound>> GetCurrentRound(Guid gameId)
         {
-            return Ok(await _mediator.Send(new GetCurrentGameRound(gameId)));
+            var round = await _mediator.Send(new GetCurrentGameRound(gameId));
+
+            if (round == null)
+                return NotFound();
+
+            return round;
         }
     }
 }
