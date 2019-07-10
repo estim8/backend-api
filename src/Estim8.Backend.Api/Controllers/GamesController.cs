@@ -56,6 +56,18 @@ namespace Estim8.Backend.Api.Controllers
 
             return CreatedAtAction(nameof(GetGame), new {gameId = id}, new IdResponse(id));
         }
+        
+        /// <summary>
+        /// Get game stats for a game
+        /// </summary>
+        /// <param name="gameId">A game ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{gameId}/stats")]
+        public async Task<IActionResult> GetRoundStats(Guid gameId)
+        {
+            return StatusCode(StatusCodes.Status501NotImplemented);
+        }
 
         /// <summary>
         /// End a game
