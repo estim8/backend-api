@@ -1,16 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ProtoBuf;
 
 namespace Estim8.Backend.Persistence.Model
 {
-    public class GameRound : Entity
+    [ProtoContract]
+    public class Round : Entity
     {
-        public int RoundNumber { get; set; }
+        [ProtoMember(1)]
         public int RoundVersion { get; set; }
+        [ProtoMember(2)]
         public DateTimeOffset StartedTimestamp { get; set; }
+        [ProtoMember(3)]
         public DateTimeOffset EndedTimestamp { get; set; }
+        [ProtoMember(4)]
         public string Subject { get; set; }
-        public IEnumerable<Entity> PlayedCards { get; set; }
     }
 }

@@ -3,9 +3,12 @@ using ProtoBuf;
 
 namespace Estim8.Backend.Persistence.Model
 {
-    public class Entity
+    [ProtoContract]
+    [ProtoInclude(10, typeof(Game))]
+    [ProtoInclude(11, typeof(Round))]
+    public abstract class Entity
     {
-        [ProtoMember(0)]
-        public Guid Id { get; protected set; }
+        [ProtoMember(1)]
+        public Guid Id { get; set; }
     }
 }

@@ -43,12 +43,12 @@ namespace Estim8.Backend.Persistence.Decorators
             }
         }
 
-        public async Task<bool> Upsert(TEntity entity)
+        public async Task Upsert(TEntity entity)
         {
             try
             {
                 Log.LogDebug("Trying to upsert {Entity} with id '{Id}'", entity, entity.Id);
-                return await Decorated.Upsert(entity);
+                await Decorated.Upsert(entity);
 
             }
             catch (Exception e)

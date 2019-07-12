@@ -20,7 +20,7 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="gameId">An active game ID</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("{gameId:guid}/rounds/current/playedCard")]
+        [Route("{gameId}/rounds/current/playedCard")]
         public async Task<IActionResult> PlayCard(Guid gameId)
         {
             return Ok();
@@ -32,7 +32,7 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="gameId">An active game ID</param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("{gameId:guid}/rounds/current/playedCard")]
+        [Route("{gameId}/rounds/current/playedCard")]
         public async Task<IActionResult> RemoveCard(Guid gameId)
         {
             return Ok();

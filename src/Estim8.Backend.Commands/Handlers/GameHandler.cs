@@ -15,12 +15,19 @@ namespace Estim8.Backend.Commands.Handlers
         {
             _gameRepo = gameRepo;
         }
-        
+
         public async Task<Response> Handle(CreateGame request, CancellationToken cancellationToken)
         {
-            var result = await _gameRepo.Upsert(new Game(request.Id){CreatedTimestamp = DateTimeOffset.Now, PublicId = request.PublicId});
-            
-            return Response.FromResult(result);
+            await _gameRepo.Upsert(new Game
+            {
+                Id = request.Id, 
+                CreatedTimestamp = DateTimeOffset.Now, 
+                PublicId = request.PublicId,
+                CardSetId = request.CardsetId, 
+                Secret = request.Secret
+            });
+
+            return Response.Success;
         }
     }
 }
