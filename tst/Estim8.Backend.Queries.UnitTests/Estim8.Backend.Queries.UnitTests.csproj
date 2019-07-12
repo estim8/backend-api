@@ -13,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Estim8.Backend.Queries\Estim8.Backend.Queries.csproj" />
-      <ProjectReference Include="..\tst\Estim8.TestInfrastructure\Estim8.TestInfrastructure.csproj" />
+      <ProjectReference Include="..\Estim8.TestInfrastructure\Estim8.TestInfrastructure.csproj" />
+      <ProjectReference Include="..\..\src\Estim8.Backend.Queries\Estim8.Backend.Queries.csproj" />
     </ItemGroup>
 
 </Project>
