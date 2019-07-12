@@ -9,24 +9,24 @@ using Microsoft.Extensions.Logging;
 
 namespace Estim8.Backend.Persistence.Repositories
 {
-    public class GameRoundRepository : RedisRepository<GameRound>, IGameRoundRepository
+    public class RoundRepository : RedisRepository<Round>, IRoundRepository
     {
-        public GameRoundRepository(IContext redisContext, ILoggerFactory loggerFactory) : base(redisContext, loggerFactory)
+        public RoundRepository(IContext redisContext, ILoggerFactory loggerFactory) : base(redisContext, loggerFactory)
         {
         }
 
-        public async  Task AddRound(Guid gameId, GameRound round)
+        public async  Task AddRound(Guid gameId, Round round)
         {
             await GetRounds(gameId).AddAsync(round);
         }
 
-        public async Task<GameRound> GetById(Guid gameId, Guid roundId)
+        public async Task<Round> GetById(Guid gameId, Guid roundId)
         {
             var rounds = await GetAllRounds(gameId);
             return rounds.SingleOrDefault(x => x.Id == roundId);
         }
 
-        public async Task Replace(Guid gameId, Guid roundId, GameRound round)
+        public async Task Replace(Guid gameId, Guid roundId, Round round)
         {
             //TODO: Make this all serverside chained ops
             var r = await GetById(gameId, roundId);
@@ -36,13 +36,13 @@ namespace Estim8.Backend.Persistence.Repositories
             await GetRounds(gameId).InsertAsync(persistedIdx, round);
         }
 
-        public async Task<GameRound> GetCurrentRound(Guid gameId)
+        public async Task<Round> GetCurrentRound(Guid gameId)
         {
             var q = await GetRounds(gameId).GetRangeAsync(-2);
             return q.LastOrDefault();
         }
 
-        public async Task<IEnumerable<GameRound>> GetAllRounds(Guid gameId)
+        public async Task<IEnumerable<Round>> GetAllRounds(Guid gameId)
         {
             return await GetRounds(gameId).GetRangeAsync();
         }
@@ -53,9 +53,9 @@ namespace Estim8.Backend.Persistence.Repositories
             await GetRounds(gameId).RemoveAsync(rounds.Single(x => x.Id == roundId), 1);
         }
 
-        private IRedisList<GameRound> GetRounds(Guid gameId)
+        private IRedisList<Round> GetRounds(Guid gameId)
         {
-            return Redis.Collections.GetRedisList<GameRound>($"game:id:{gameId}:rounds");
+            return Redis.Collections.GetRedisList<Round>($"game:id:{gameId}:rounds");
         }
     }
 }

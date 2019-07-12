@@ -4,9 +4,9 @@ using MediatR;
 
 namespace Estim8.Backend.Queries.Queries
 {
-    public class GetGameRoundById : IRequest<GameRound>
+    public class GetRoundById : IRequest<Round>
     {
-        public GetGameRoundById(Guid gameId, Guid roundId, int roundVersion = 0)
+        public GetRoundById(Guid gameId, Guid roundId, int roundVersion = 0)
         {
             GameId = gameId;
             RoundId = roundId;
@@ -18,9 +18,9 @@ namespace Estim8.Backend.Queries.Queries
         public int RoundVersion { get; set; }
     }
 
-    public class GetCurrentGameRound : IRequest<GameRound>
+    public class GetCurrentRound : IRequest<Round>
     {
-        public GetCurrentGameRound(Guid gameId)
+        public GetCurrentRound(Guid gameId)
         {
             GameId = gameId;
         }

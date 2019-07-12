@@ -2,7 +2,7 @@ using System;
 
 namespace Estim8.Backend.Queries.Model
 {
-    public class GameRound
+    public class Round
     {
         public Guid Id { get; set; }
         public int RoundVersion { get; set; }

@@ -48,7 +48,7 @@ namespace Estim8.Backend.Persistence.Registry
                 x.RegisterConcreteTypesAgainstTheFirstInterface();
             });
 
-            For<IGameRoundRepository>().Use<GameRoundRepository>();
+            For<IRoundRepository>().Use<RoundRepository>();
             
             ProtoBufConfig.Configure();
             

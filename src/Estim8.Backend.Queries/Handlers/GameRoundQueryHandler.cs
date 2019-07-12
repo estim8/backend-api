@@ -7,23 +7,23 @@ using Estim8.Backend.Queries.Queries;
 
 namespace Estim8.Backend.Queries.Handlers
 {
-    public class GameRoundQueryHandler : IQueryHandler<GetGameRoundById, GameRound>, IQueryHandler<GetCurrentGameRound, GameRound>
+    public class GameRoundQueryHandler : IQueryHandler<GetRoundById, Round>, IQueryHandler<GetCurrentRound, Round>
     {
-        private readonly IGameRoundRepository _repo;
+        private readonly IRoundRepository _repo;
 
-        public GameRoundQueryHandler(IGameRoundRepository repo)
+        public GameRoundQueryHandler(IRoundRepository repo)
         {
             _repo = repo;
         }
         
-        public async Task<GameRound> Handle(GetGameRoundById request, CancellationToken cancellationToken)
+        public async Task<Round> Handle(GetRoundById request, CancellationToken cancellationToken)
         {
             var round = await _repo.GetById(request.GameId, request.RoundId);
             
             if (round == null)
                 return null;
 
-            return new GameRound
+            return new Round
             {
                 Id = round.Id,
                 RoundVersion = round.RoundVersion,
@@ -33,14 +33,14 @@ namespace Estim8.Backend.Queries.Handlers
             };
         }
 
-        public async Task<GameRound> Handle(GetCurrentGameRound request, CancellationToken cancellationToken)
+        public async Task<Round> Handle(GetCurrentRound request, CancellationToken cancellationToken)
         {
             var round = await _repo.GetCurrentRound(request.GameId);
 
             if (round == null)
                 return null;
             
-            return new GameRound
+            return new Round
             {
                 Id = round.Id,
                 RoundVersion = round.RoundVersion,

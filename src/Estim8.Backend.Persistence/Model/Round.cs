@@ -6,7 +6,7 @@ using ProtoBuf;
 namespace Estim8.Backend.Persistence.Model
 {
     [ProtoContract]
-    public class GameRound : Entity
+    public class Round : Entity
     {
         [ProtoMember(1)]
         public int RoundVersion { get; set; }

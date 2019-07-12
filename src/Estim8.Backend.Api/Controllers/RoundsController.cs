@@ -61,9 +61,9 @@ namespace Estim8.Backend.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("{gameId}/rounds/{roundId}")]
-        public async Task<ActionResult<GameRound>> GetRound(Guid gameId, Guid roundId)
+        public async Task<ActionResult<Round>> GetRound(Guid gameId, Guid roundId)
         {
-            var round = await _mediator.Send(new GetGameRoundById(gameId, roundId));
+            var round = await _mediator.Send(new GetRoundById(gameId, roundId));
 
             if (round == null)
                 return NotFound();
@@ -92,9 +92,9 @@ namespace Estim8.Backend.Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("{gameId}/rounds/current")]
-        public async Task<ActionResult<GameRound>> GetCurrentRound(Guid gameId)
+        public async Task<ActionResult<Round>> GetCurrentRound(Guid gameId)
         {
-            var round = await _mediator.Send(new GetCurrentGameRound(gameId));
+            var round = await _mediator.Send(new GetCurrentRound(gameId));
 
             if (round == null)
                 return NotFound();
