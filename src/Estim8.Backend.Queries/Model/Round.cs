@@ -9,5 +9,6 @@ namespace Estim8.Backend.Queries.Model
         public DateTimeOffset StartedTimestamp { get; set; }
         public DateTimeOffset EndedTimestamp { get; set; }
         public string Subject { get; set; }
+        public Guid GameId { get; set; }
     }
 }

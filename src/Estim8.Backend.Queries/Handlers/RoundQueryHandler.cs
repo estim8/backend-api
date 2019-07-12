@@ -7,11 +7,11 @@ using Estim8.Backend.Queries.Queries;
 
 namespace Estim8.Backend.Queries.Handlers
 {
-    public class GameRoundQueryHandler : IQueryHandler<GetRoundById, Round>, IQueryHandler<GetCurrentRound, Round>
+    public class RoundQueryHandler : IQueryHandler<GetRoundById, Round>, IQueryHandler<GetCurrentRound, Round>
     {
         private readonly IRoundRepository _repo;
 
-        public GameRoundQueryHandler(IRoundRepository repo)
+        public RoundQueryHandler(IRoundRepository repo)
         {
             _repo = repo;
         }
@@ -26,6 +26,7 @@ namespace Estim8.Backend.Queries.Handlers
             return new Round
             {
                 Id = round.Id,
+                GameId = request.GameId,
                 RoundVersion = round.RoundVersion,
                 StartedTimestamp = round.StartedTimestamp,
                 EndedTimestamp = round.EndedTimestamp,
@@ -43,6 +44,7 @@ namespace Estim8.Backend.Queries.Handlers
             return new Round
             {
                 Id = round.Id,
+                GameId = request.GameId,
                 RoundVersion = round.RoundVersion,
                 StartedTimestamp = round.StartedTimestamp,
                 EndedTimestamp = round.EndedTimestamp,
