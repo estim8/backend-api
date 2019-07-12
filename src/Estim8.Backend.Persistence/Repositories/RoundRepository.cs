@@ -15,7 +15,7 @@ namespace Estim8.Backend.Persistence.Repositories
         {
         }
 
-        public async  Task AddRound(Guid gameId, Round round)
+        public async Task AddRound(Guid gameId, Round round)
         {
             await GetRounds(gameId).AddAsync(round);
         }
@@ -38,13 +38,14 @@ namespace Estim8.Backend.Persistence.Repositories
 
         public async Task<Round> GetCurrentRound(Guid gameId)
         {
-            var q = await GetRounds(gameId).GetRangeAsync(-2);
+            var q = await GetRounds(gameId).GetRangeAsync(-1);
             return q.LastOrDefault();
         }
 
         public async Task<IEnumerable<Round>> GetAllRounds(Guid gameId)
         {
-            return await GetRounds(gameId).GetRangeAsync();
+            var rounds = GetRounds(gameId);
+            return await rounds.GetRangeAsync();
         }
 
         public async Task Delete(Guid gameId, Guid roundId)
