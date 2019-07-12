@@ -36,9 +36,9 @@ namespace Estim8.Backend.Persistence.Registry
             });
             
             //ForSingletonOf<ISerializer>().Use<ProtobufSerializer>();
-            ForSingletonOf<IRedisCacheClient>().Use<RedisCacheClient>();
-            ForSingletonOf<IRedisCacheConnectionPoolManager>().Use<RedisCacheConnectionPoolManager>();
-            ForSingletonOf<IRedisDefaultCacheClient>().Use<RedisDefaultCacheClient>();
+            //ForSingletonOf<IRedisCacheClient>().Use<RedisCacheClient>();
+            //ForSingletonOf<IRedisCacheConnectionPoolManager>().Use<RedisCacheConnectionPoolManager>();
+            //ForSingletonOf<IRedisDefaultCacheClient>().Use<RedisDefaultCacheClient>();
 
             For<ILogger>().Use(Log.Logger);
             Scan(x =>
