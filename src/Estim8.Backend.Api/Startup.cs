@@ -53,13 +53,13 @@ namespace Estim8.Backend.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            services.AddCors(x => x.AddDefaultPolicy(new CorsPolicy
+            services.AddCors(x => x.AddDefaultPolicy(builder =>
             {
-                Origins = {"*"},
-                Headers = {"*"},
-                Methods = {"*"}
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             }));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,13 +71,18 @@ namespace Estim8.Backend.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
+            app.UseCors();
+            app.UseHttpsRedirection();
+            
             app.UseMvc();
             
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Estim8 API"); });
-
-            app.UseCors();
         }
     }
 }
