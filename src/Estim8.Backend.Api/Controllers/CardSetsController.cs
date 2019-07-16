@@ -9,7 +9,7 @@ namespace Estim8.Backend.Api.Controllers
     /// <summary>
     /// Types of cards (cardsets) used in games
     /// </summary>
-    [Route("api/cardsets")]
+    [Route("api/v1/cardsets")]
     public class CardsetsController : ControllerBase
     {
         /// <summary>

@@ -7,7 +7,7 @@ namespace Estim8.Backend.Api.Controllers
     /// <summary>
     /// Play operations in active game
     /// </summary>
-    [Route("api/games")]
+    [Route("api/v1/games")]
     [ApiController]
     public class PlayController : ControllerBase
     {
