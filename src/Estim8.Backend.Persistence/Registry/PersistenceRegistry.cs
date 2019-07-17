@@ -40,6 +40,7 @@ namespace Estim8.Backend.Persistence.Registry
                 x.RegisterConcreteTypesAgainstTheFirstInterface();
             });
             For<IRoundRepository>().Use<RoundRepository>();
+            For<IGameRepository>().Use<GameRepository>();
             
             For(typeof(IRepository<>)).DecorateAllWith(typeof(RepositoryLogDecorator<>));
             For<ILogger>().Use(Log.Logger);

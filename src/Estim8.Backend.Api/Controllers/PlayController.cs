@@ -1,5 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using Estim8.Backend.Api.Model;
+using Estim8.Backend.Commands.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estim8.Backend.Api.Controllers
@@ -11,6 +15,13 @@ namespace Estim8.Backend.Api.Controllers
     [ApiController]
     public class PlayController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public PlayController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+        
         /// <summary>
         /// Play a card
         /// </summary>
@@ -35,6 +46,26 @@ namespace Estim8.Backend.Api.Controllers
         [Route("{gameId}/rounds/current/playedCard")]
         public async Task<IActionResult> RemoveCard(Guid gameId)
         {
+            return Ok();
+        }
+        
+        /// <summary>
+        /// Start a game
+        /// </summary>
+        /// <remarks>Advances a game from AwaitingPlayers to Playing state</remarks>
+        /// <param name="gameId">A game ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Route("{gameId}/start")]
+        public async Task<ActionResult<IdResponse>> StartGame(Guid gameId)
+        {
+            var result = await _mediator.Send(new StartGame{GameId = gameId});
+
+            if (!result.IsSuccess)
+                return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
+
             return Ok();
         }
     }

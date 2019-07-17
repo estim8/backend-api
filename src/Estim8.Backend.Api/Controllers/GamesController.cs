@@ -57,28 +57,7 @@ namespace Estim8.Backend.Api.Controllers
 
             return CreatedAtAction(nameof(GetGame), new {gameId = id}, new IdResponse(id));
         }
-        
-        
-        /// <summary>
-        /// Start a game
-        /// </summary>
-        /// <remarks>Advances a game from AwaitingPlayers to Playing state</remarks>
-        /// <param name="gameId">A game ID</param>
-        /// <returns></returns>
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Route("{gameId}/start")]
-        public async Task<ActionResult<IdResponse>> StartGame(Guid gameId)
-        {
-            var result = await _mediator.Send(new StartGame{GameId = gameId});
 
-            if (!result.IsSuccess)
-                return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
-
-            return Ok();
-        }
-        
         /// <summary>
         /// Get game stats for a game
         /// </summary>
