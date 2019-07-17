@@ -7,11 +7,11 @@ using Estim8.Backend.Persistence.Repositories;
 
 namespace Estim8.Backend.Commands.Handlers
 {
-    public class GameHandler : ICommandHandler<CreateGame>
+    public class GameHandler : ICommandHandler<CreateGame>, ICommandHandler<StartGame>
     {
-        private readonly IRepository<Game> _gameRepo;
+        private readonly IGameRepository _gameRepo;
 
-        public GameHandler(IRepository<Game> gameRepo)
+        public GameHandler(IGameRepository gameRepo)
         {
             _gameRepo = gameRepo;
         }
@@ -28,6 +28,13 @@ namespace Estim8.Backend.Commands.Handlers
                 State = GameState.AwaitingPlayers,
             });
 
+            return Response.Success;
+        }
+
+        public async Task<Response> Handle(StartGame request, CancellationToken cancellationToken)
+        {
+            await _gameRepo.SetGameState(request.GameId, GameState.Playing);
+            
             return Response.Success;
         }
     }
