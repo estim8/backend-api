@@ -41,7 +41,7 @@ namespace Estim8.Backend.Api
             services.Configure<PersistenceConfiguration>(_config.GetSection(nameof(PersistenceConfiguration)));
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c =>
             {
