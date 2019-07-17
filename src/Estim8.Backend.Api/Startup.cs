@@ -49,6 +49,8 @@ namespace Estim8.Backend.Api
                 c.SwaggerDoc("v1", new Info {Title = "Estim8 API", Version = "v1"}); 
                 
                 c.DescribeAllEnumsAsStrings();
+                c.DescribeStringEnumsInCamelCase();
+                c.DescribeAllParametersInCamelCase();
                 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
