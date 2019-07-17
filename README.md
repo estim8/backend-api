@@ -37,11 +37,11 @@ You can read more about the overall architecture [here](https://github.com/estim
 Running the code is really easy. Just clone the repo and run `docker-compose -f ./docker-compose.yml up` from a terminal.
 This will build and spin up the API in a container and Redis in another. If you have [Docker](https://www.docker.com/get-started) installed, that is.
 
-The API is then accessible on `http://localhost:33000/swagger`
+The API is then accessible on `http://localhost:33000`
 
 ## Latest build
 
-The latest successful build is automatically deployed in QA and is accessible at https://api-qa.estim8.io/swagger
+The latest successful build is automatically deployed in QA and is accessible at https://api-qa.estim8.io
 
 # Get involved
 
