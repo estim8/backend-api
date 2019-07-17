@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Estim8.Backend.Persistence.Repositories;
@@ -29,7 +27,8 @@ namespace Estim8.Backend.Queries.Handlers
             {
                 Id = entity.Id,
                 PublicId = entity.PublicId,
-                CreatedTimestamp = entity.CreatedTimestamp
+                CreatedTimestamp = entity.CreatedTimestamp,
+                State = Enum.Parse<GameState>(entity.State.ToString())
             };        
         }
     }

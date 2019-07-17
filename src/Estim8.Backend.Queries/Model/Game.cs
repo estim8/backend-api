@@ -7,5 +7,13 @@ namespace Estim8.Backend.Queries.Model
         public Guid Id { get; set; }
         public string PublicId { get; set; }
         public DateTimeOffset CreatedTimestamp { get; set; }
+        public GameState State { get; set; }
+    }
+    
+    public enum GameState
+    {
+        AwaitingPlayers,
+        Playing,
+        Ended
     }
 }

@@ -24,7 +24,8 @@ namespace Estim8.Backend.Commands.Handlers
                 CreatedTimestamp = DateTimeOffset.Now, 
                 PublicId = request.PublicId,
                 CardSetId = request.CardsetId, 
-                Secret = request.Secret
+                Secret = request.Secret,
+                State = GameState.AwaitingPlayers,
             });
 
             return Response.Success;

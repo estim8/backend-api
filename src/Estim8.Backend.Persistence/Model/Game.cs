@@ -18,6 +18,16 @@ namespace Estim8.Backend.Persistence.Model
         public DateTimeOffset StartedTimestamp { get; set; }
         [ProtoMember(5)]
         public DateTimeOffset EndedTimestamp { get; set; }
-        [ProtoMember(8)] public string Secret { get; set; }
+        [ProtoMember(8)]
+        public string Secret { get; set; }
+        [ProtoMember(9)]
+        public GameState State { get; set; }
+    }
+
+    public enum GameState
+    {
+        AwaitingPlayers,
+        Playing,
+        Ended
     }
 }
