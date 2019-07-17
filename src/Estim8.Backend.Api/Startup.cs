@@ -78,6 +78,7 @@ namespace Estim8.Backend.Api
                 app.UseHsts();
             }
 
+            app.UseStaticFiles();
             app.UseCors();
             app.UseHttpsRedirection();
             
@@ -88,6 +89,7 @@ namespace Estim8.Backend.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Estim8 API");
                 c.RoutePrefix = "";
+                c.InjectStylesheet("/swagger-ui.css");
             });
         }
     }
