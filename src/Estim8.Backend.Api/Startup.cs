@@ -42,7 +42,12 @@ namespace Estim8.Backend.Api
             services.Configure<PersistenceConfiguration>(_config.GetSection(nameof(PersistenceConfiguration)));
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
 
             services.AddSwaggerGen(c =>
             {
