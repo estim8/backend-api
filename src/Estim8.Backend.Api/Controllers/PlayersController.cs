@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using Estim8.Backend.Api.Hubs;
 using Estim8.Backend.Api.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Estim8.Backend.Api.Controllers
 {
@@ -12,6 +14,13 @@ namespace Estim8.Backend.Api.Controllers
     [ApiController]
     public class PlayersController : ControllerBase
     {
+        private readonly IHubContext<GameHub, IPlayerClient> _gameHub;
+
+        public PlayersController(IHubContext<GameHub, IPlayerClient> gameHub)
+        {
+            _gameHub = gameHub;
+        }
+        
         /// <summary>
         /// Add a player to an active game
         /// </summary>
@@ -22,6 +31,9 @@ namespace Estim8.Backend.Api.Controllers
         [Route("{gameId}/players")]
         public async Task<IActionResult> AddPlayer(Guid gameId, AddPlayerToGameRequest request)
         {
+            var playerId = Guid.NewGuid();
+            await _gameHub.Clients.All.PlayerAddedToGame(gameId, playerId);
+
             return Ok();
         }
 
@@ -35,6 +47,8 @@ namespace Estim8.Backend.Api.Controllers
         [Route("{gameId}/players/{playerId}")]
         public async Task<IActionResult> RemovePlayer(Guid gameId, Guid playerId)
         {
+            await _gameHub.Clients.All.PlayerRemovedFromGame(gameId, playerId);
+            
             return Ok();
         }
     }

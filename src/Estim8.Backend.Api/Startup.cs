@@ -5,12 +5,14 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using Estim8.Backend.Api.Hubs;
 using Estim8.Backend.Persistence;
 using Lamar;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,6 +45,7 @@ namespace Estim8.Backend.Api
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info {Title = "Estim8 API", Version = "v1"}); 
@@ -72,6 +75,7 @@ namespace Estim8.Backend.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSignalR(routes => { routes.MapHub<GameHub>("/hubs/games"); });
             app.UseMvc();
             
             app.UseSwagger();
