@@ -67,9 +67,13 @@ namespace Estim8.Backend.Api
             services.AddCors(x => x.AddDefaultPolicy(builder =>
             {
                 builder
-                    .AllowAnyOrigin()
+                    .WithOrigins(
+                        "https://www.estim8.io", 
+                        "https://www-qa.estim8.io", 
+                        "http://localhost:8080")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
+                    .AllowCredentials()
                     .WithExposedHeaders(HttpResponseHeader.Location.ToString());
             }));
         }
