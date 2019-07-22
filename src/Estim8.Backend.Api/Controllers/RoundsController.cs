@@ -13,7 +13,7 @@ namespace Estim8.Backend.Api.Controllers
     /// <summary>
     /// Operations for rounds of an active game
     /// </summary>
-    [Route("api/games")]
+    [Route("api/v1/games")]
     [ApiController]
     public class RoundsController : ControllerBase
     {

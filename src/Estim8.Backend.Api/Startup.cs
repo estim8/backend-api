@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebSockets.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -43,7 +44,12 @@ namespace Estim8.Backend.Api
             services.Configure<PersistenceConfiguration>(_config.GetSection(nameof(PersistenceConfiguration)));
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
 
             services.AddSignalR();
             services.AddSwaggerGen(c =>
@@ -51,18 +57,21 @@ namespace Estim8.Backend.Api
                 c.SwaggerDoc("v1", new Info {Title = "Estim8 API", Version = "v1"}); 
                 
                 c.DescribeAllEnumsAsStrings();
+                c.DescribeStringEnumsInCamelCase();
+                c.DescribeAllParametersInCamelCase();
                 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            services.AddCors(x => x.AddDefaultPolicy(new CorsPolicy
+            services.AddCors(x => x.AddDefaultPolicy(builder =>
             {
-                Origins = {"*"},
-                Headers = {"*"},
-                Methods = {"*"}
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithExposedHeaders(HttpResponseHeader.Location.ToString());
             }));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,14 +83,25 @@ namespace Estim8.Backend.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
+            app.UseStaticFiles();
+            app.UseCors();
+            app.UseHttpsRedirection();
+            
             app.UseSignalR(routes => { routes.MapHub<GameHub>("/hubs/games"); });
             app.UseMvc();
             
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Estim8 API"); });
-
-            app.UseCors();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Estim8 API");
+                c.RoutePrefix = "";
+                c.InjectStylesheet("/swagger-ui.css");
+            });
         }
     }
 }

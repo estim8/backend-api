@@ -13,7 +13,7 @@ namespace Estim8.Backend.Api.Controllers
     /// <summary>
     /// Operations on games
     /// </summary>
-    [Route("api/games")]
+    [Route("api/v1/games")]
     [ApiController]
     public class GamesController : ControllerBase
     {
@@ -40,6 +40,7 @@ namespace Estim8.Backend.Api.Controllers
         /// <summary>
         /// Create a new game
         /// </summary>
+        /// <remarks>The game is created in AwaitingPlayers state</remarks>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
@@ -56,7 +57,7 @@ namespace Estim8.Backend.Api.Controllers
 
             return CreatedAtAction(nameof(GetGame), new {gameId = id}, new IdResponse(id));
         }
-        
+
         /// <summary>
         /// Get game stats for a game
         /// </summary>

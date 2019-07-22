@@ -4,6 +4,7 @@ using Estim8.Backend.Persistence.Decorators;
 using Estim8.Backend.Persistence.ProtoBuf;
 using Estim8.Backend.Persistence.Repositories;
 using Lamar;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ProtoBuf.Meta;
@@ -22,37 +23,27 @@ namespace Estim8.Backend.Persistence.Registry
     public class PersistenceRegistry : ServiceRegistry
     {
         public PersistenceRegistry()
-        {
-            ForSingletonOf<RedisConfiguration>().Use(ctx =>
-            {
-                var opt = ctx.GetInstance<IOptions<PersistenceConfiguration>>().Value;
-                return opt.RedisConfiguration;
-            });
-            
+        {   
             ForSingletonOf<IContext>().Use(ctx =>
             {
-                var connectionPool = ctx.GetInstance<IRedisCacheConnectionPoolManager>();
-                return new RedisContext(connectionPool.GetConnection(), new ProtoBufSerializer());
+                var globalConfig = ctx.GetInstance<IConfiguration>();
+                var redisConnStr = globalConfig.GetConnectionString("RedisConnection");
+                var redisConnection = ConnectionMultiplexer.Connect(redisConnStr);
+                return new RedisContext(redisConnection, new ProtoBufSerializer());
             });
-            
-            //ForSingletonOf<ISerializer>().Use<ProtobufSerializer>();
-            //ForSingletonOf<IRedisCacheClient>().Use<RedisCacheClient>();
-            //ForSingletonOf<IRedisCacheConnectionPoolManager>().Use<RedisCacheConnectionPoolManager>();
-            //ForSingletonOf<IRedisDefaultCacheClient>().Use<RedisDefaultCacheClient>();
+            ProtoBufConfig.Configure();
 
-            For<ILogger>().Use(Log.Logger);
             Scan(x =>
             {
                 x.AssemblyContainingType<PersistenceRegistry>();
                 x.ConnectImplementationsToTypesClosing(typeof(IRepository<>));
                 x.RegisterConcreteTypesAgainstTheFirstInterface();
             });
-
             For<IRoundRepository>().Use<RoundRepository>();
+            For<IGameRepository>().Use<GameRepository>();
             
-            ProtoBufConfig.Configure();
-            
-            For(typeof(IRepository<>)).DecorateAllWith(typeof(RepositoryLogDecorator<>));
+//            For(typeof(IRepository<>)).DecorateAllWith(typeof(RepositoryLogDecorator<>));
+            For<ILogger>().Use(Log.Logger);
         }
     }
 }
