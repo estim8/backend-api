@@ -74,7 +74,7 @@ namespace Estim8.Backend.Api
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
-                    .WithExposedHeaders(HttpResponseHeader.Location.ToString());
+                    .WithExposedHeaders(HttpResponseHeader.Location.ToString(), "X-Dealer-Token");
             }));
         }
 
