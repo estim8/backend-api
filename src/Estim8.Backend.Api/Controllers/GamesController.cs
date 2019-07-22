@@ -7,6 +7,7 @@ using Estim8.Backend.Queries.Model;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace Estim8.Backend.Api.Controllers
 {
@@ -40,7 +41,7 @@ namespace Estim8.Backend.Api.Controllers
         /// <summary>
         /// Create a new game
         /// </summary>
-        /// <remarks>The game is created in AwaitingPlayers state</remarks>
+        /// <remarks>The game is created in AwaitingPlayers state. A Dealer Token is available in the X-Dealer-Token header for administrating the game session</remarks>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
@@ -50,11 +51,13 @@ namespace Estim8.Backend.Api.Controllers
         public async Task<ActionResult<IdResponse>> CreateGame(CreateGameRequest request)
         {
             var id = Guid.NewGuid();
-            var result = await _mediator.Send(new CreateGame {Id = id, Secret = request.Secret, CardsetId = request.CardSetId});
+            var dealerToken = Guid.NewGuid();
+            var result = await _mediator.Send(new CreateGame {Id = id, Secret = request.Secret, DealerToken = dealerToken, CardsetId = request.CardSetId});
 
             if (!result.IsSuccess)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
 
+            Response.Headers.Add("X-Dealer-Token", dealerToken.ToString());
             return CreatedAtAction(nameof(GetGame), new {gameId = id}, new IdResponse(id));
         }
 
