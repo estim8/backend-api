@@ -16,7 +16,7 @@ namespace Estim8.Backend.Persistence.Repositories
     {
         public readonly string HashSetKey;
 
-        protected RedisHashRepository(IContext redisContext, ILoggerFactory loggerFactory) : base(redisContext, loggerFactory)
+        protected RedisHashRepository(IContext redisContext, ISerializer serializer, ILoggerFactory loggerFactory) : base(redisContext, serializer, loggerFactory)
         {
             HashSetKey = $"{typeof(TEntity).Name.ToLowerInvariant()}:hash";
         }
@@ -30,17 +30,17 @@ namespace Estim8.Backend.Persistence.Repositories
         
         public virtual async Task<bool> Delete(Guid id)
         {
-            return await Redis.Cache.RemoveHashedAsync(HashSetKey, ToKey(id));
+            return await Redis.Cache.RemoveAsync(ToKey(id));
         }
 
         public virtual async Task<TEntity> GetById(Guid id)
         {
-            return await Redis.Cache.GetHashedAsync<TEntity>(HashSetKey, ToKey(id));
+            return await Redis.Cache.GetObjectAsync<TEntity>(ToKey(id));
         }
 
         public virtual async Task Upsert(TEntity entity)
         {
-            await Redis.Cache.SetHashedAsync(HashSetKey, ToKey(entity.Id), entity);
+            await Redis.Cache.SetObjectAsync(ToKey(entity.Id), entity);
         }
     }
 }

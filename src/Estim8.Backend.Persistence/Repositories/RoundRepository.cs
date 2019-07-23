@@ -11,7 +11,7 @@ namespace Estim8.Backend.Persistence.Repositories
 {
     public class RoundRepository : RedisRepository<Round>, IRoundRepository
     {
-        public RoundRepository(IContext redisContext, ILoggerFactory loggerFactory) : base(redisContext, loggerFactory)
+        public RoundRepository(IContext redisContext, ISerializer serializer, ILoggerFactory loggerFactory) : base(redisContext, serializer, loggerFactory)
         {
         }
 

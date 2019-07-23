@@ -23,15 +23,20 @@ namespace Estim8.Backend.Persistence.Registry
     public class PersistenceRegistry : ServiceRegistry
     {
         public PersistenceRegistry()
-        {   
-            ForSingletonOf<IContext>().Use(ctx =>
+        {
+            ForSingletonOf<IConnectionMultiplexer>().Use(ctx =>
             {
                 var globalConfig = ctx.GetInstance<IConfiguration>();
                 var redisConnStr = globalConfig.GetConnectionString("RedisConnection");
-                var redisConnection = ConnectionMultiplexer.Connect(redisConnStr);
-                return new RedisContext(redisConnection, new ProtoBufSerializer());
+                return ConnectionMultiplexer.Connect(redisConnStr);
             });
+
             ProtoBufConfig.Configure();
+            For<ISerializer>().Use<Estim8.Backend.Persistence.ProtoBuf.ProtoBufSerializer>();
+            For<CachingFramework.Redis.Contracts.ISerializer>().Use<Estim8.Backend.Persistence.ProtoBuf.ProtoBufSerializer>();
+            
+            ForSingletonOf<IContext>().Use<RedisContext>()
+                .SelectConstructor(() => new RedisContext((IConnectionMultiplexer)null, (CachingFramework.Redis.Contracts.ISerializer)null));
 
             Scan(x =>
             {

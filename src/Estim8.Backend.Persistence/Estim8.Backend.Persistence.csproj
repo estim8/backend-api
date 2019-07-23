@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CachingFramework.Redis" Version="10.0.4" />
+    <PackageReference Include="CachingFramework.Redis" Version="10.0.5" />
     <PackageReference Include="Lamar" Version="3.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />

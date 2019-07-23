@@ -16,14 +16,30 @@ namespace Estim8.Backend.Persistence.Repositories
     {
         protected IContext Redis;
         protected ILogger Logger;
+        protected IDatabase Database => Redis.GetConnectionMultiplexer().GetDatabase();
+        protected ISerializer Serializer;
 
-        protected RedisRepository(IContext redisContext, ILoggerFactory loggerFactory)
+        protected RedisRepository(IContext redisContext, ISerializer serializer, ILoggerFactory loggerFactory)
         {
             Redis = redisContext;
+            Serializer = serializer;
             Logger = loggerFactory.CreateLogger<RedisRepository<TEntity>>();
+
+            var redis = redisContext.GetConnectionMultiplexer();
+            Logger.LogInformation("Redis {EntityName} repository ready. Connection is {ConnectionStatus}.", typeof(TEntity).Name, redis.IsConnected ? "CONNECTED" : "DISCONNECTED");
+        }
+
+        protected async Task<bool> ModifyObjectInTransaction(string key, Action<TEntity> mutate)
+        {
+            var tran = Database.CreateTransaction();
+            var original = await Redis.Cache.GetObjectAsync<TEntity>(key);
             
-            var redis = Redis as RedisContext;
-            Logger.LogInformation("Redis {EntityName} repository ready. Connection is {ConnectionStatus}.", typeof(TEntity).Name, redis?.GetConnectionMultiplexer().IsConnected);
-        } 
+            tran.AddCondition(Condition.StringEqual(key, Serializer.Serialize(original)));
+            
+            mutate(original);
+            tran.StringSetAsync(key, Serializer.Serialize(original));
+
+            return await tran.ExecuteAsync();        
+        }
     }
 }
