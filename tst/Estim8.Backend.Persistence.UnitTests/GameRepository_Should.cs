@@ -22,7 +22,7 @@ namespace Estim8.Backend.Persistence.UnitTests
         {
             //Arrange
             redisCtxMock.SetupGet(x => x.Cache).Returns(redisCacheProviderMock.Object);
-            redisCacheProviderMock.Setup(x => x.RemoveHashedAsync(It.IsAny<string>(), It.IsAny<string>()))
+            redisCacheProviderMock.Setup(x => x.RemoveAsync(It.IsAny<string>()))
                 .ReturnsAsync(true);
             
             var sut = fixture.Create<GameRepository>();
@@ -32,7 +32,7 @@ namespace Estim8.Backend.Persistence.UnitTests
 
             //Assert
             answer.ShouldBe(true, "Redis should acknowledge the delete");
-            redisCacheProviderMock.Verify(x => x.RemoveHashedAsync(sut.HashSetKey, sut.ToKey(gameId, null)), Times.Once,"Redis should remove entry from hashset");
+            redisCacheProviderMock.Verify(x => x.RemoveAsync(sut.ToKey(gameId, null)), Times.Once,"Redis should remove entry from hashset");
         }
 
         [Theory, AutoMoqData]
@@ -40,7 +40,7 @@ namespace Estim8.Backend.Persistence.UnitTests
         {
             //Arrange
             redisCtxMock.SetupGet(x => x.Cache).Returns(redisCacheProviderMock.Object);
-            redisCacheProviderMock.Setup(x => x.SetHashedAsync(It.IsAny<string>(), It.IsAny<string>(), game, It.IsAny<TimeSpan>(), It.IsAny<When>()));
+            redisCacheProviderMock.Setup(x => x.SetObjectAsync(It.IsAny<string>(), game, It.IsAny<TimeSpan>(), It.IsAny<When>()));
 
             var sut = fixture.Create<GameRepository>();
             
@@ -48,7 +48,7 @@ namespace Estim8.Backend.Persistence.UnitTests
             await sut.Upsert(game);
 
             //Assert
-            redisCacheProviderMock.Verify(x => x.SetHashedAsync(sut.HashSetKey, sut.ToKey(game.Id, null), game, It.IsAny<TimeSpan?>(), It.IsAny<When>()), Times.Once);
+            redisCacheProviderMock.Verify(x => x.SetObjectAsync(sut.ToKey(game.Id, null), game, It.IsAny<TimeSpan?>(), It.IsAny<When>()), Times.Once);
         }
     }
 }
