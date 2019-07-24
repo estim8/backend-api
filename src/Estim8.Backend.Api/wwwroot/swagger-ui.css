@@ -1,4 +1,9 @@
 @charset "UTF-8";
+body {
+    font-family: Open Sans, sans-serif;
+    font-size: 14px;
+}
+
 .swagger-ui html {
     box-sizing: border-box
 }

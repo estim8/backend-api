@@ -27,8 +27,13 @@ namespace Estim8.Backend.Api.Controllers
         }
         
         /// <summary>
-        /// Add a player to an active game
+        /// Join an active game
         /// </summary>
+        /// <remarks>
+        /// Create and add a new player to an active game.
+        /// The game secret must be presented.
+        /// On successful join, a player access token is returned, which must be used when performing player actions in the game.
+        /// </remarks>
         /// <param name="gameId">An active game ID</param>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -54,8 +59,11 @@ namespace Estim8.Backend.Api.Controllers
         }
 
         /// <summary>
-        /// Remove a player from an active game
+        /// Leave an active game
         /// </summary>
+        /// <remarks>
+        /// Only the game's dealer or the player himself is allowed to remove the player from the game
+        /// </remarks>
         /// <param name="gameId">An active game ID</param>
         /// <param name="playerId">The player ID to remove</param>
         /// <returns></returns>

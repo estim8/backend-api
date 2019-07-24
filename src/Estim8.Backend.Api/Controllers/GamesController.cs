@@ -51,9 +51,12 @@ namespace Estim8.Backend.Api.Controllers
         }
 
         /// <summary>
-        /// Create a new game
+        /// Host a new game
         /// </summary>
-        /// <remarks>The game is created in AwaitingPlayers state. A Dealer Token is available in the X-Dealer-Token header for administrating the game session</remarks>
+        /// <remarks>The game is created in AwaitingPlayers state.
+        /// The game's unique ID as well as the unique dealer access token is returned in the body.
+        /// Access token must be used for all game management operations (marked with Dealer auth. role)
+        /// </remarks>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
