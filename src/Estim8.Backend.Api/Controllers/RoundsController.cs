@@ -5,6 +5,7 @@ using Estim8.Backend.Commands.Commands;
 using Estim8.Backend.Queries.Model;
 using Estim8.Backend.Queries.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,7 @@ namespace Estim8.Backend.Api.Controllers
     /// </summary>
     [Route("api/v1/games")]
     [ApiController]
-    public class RoundsController : ControllerBase
+    public class RoundsController : ApiControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -35,10 +36,14 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="request">The round to add</param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "Dealer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [Route("{gameId}/rounds")]
         public async Task<ActionResult<IdResponse>> AddRound(Guid gameId, AddGameRoundRequest request)
         {
+            if (!IsInGame(gameId))
+                return Unauthorized();
+            
             var roundId = Guid.NewGuid();
             await _mediator.Send(new AddGameRound
             {
@@ -58,11 +63,15 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="roundId">A game round in the game</param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("{gameId}/rounds/{roundId}")]
         public async Task<ActionResult<Round>> GetRound(Guid gameId, Guid roundId)
         {
+            if (!IsInGame(gameId))
+                return Unauthorized();
+            
             var round = await _mediator.Send(new GetRoundById(gameId, roundId));
 
             if (round == null)
@@ -78,9 +87,13 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="roundId">A game round in the game</param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         [Route("{gameId}/rounds/{roundId}/stats")]
         public async Task<IActionResult> GetRoundStats(Guid gameId, Guid roundId)
         {
+            if (!IsInGame(gameId))
+                return Unauthorized();
+            
             return StatusCode(StatusCodes.Status501NotImplemented);
         }
 
@@ -90,10 +103,14 @@ namespace Estim8.Backend.Api.Controllers
         /// <param name="gameId">An active game ID</param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("{gameId}/rounds/current")]
         public async Task<ActionResult<Round>> GetCurrentRound(Guid gameId)
         {
+            if (!IsInGame(gameId))
+                return Unauthorized();
+            
             var round = await _mediator.Send(new GetCurrentRound(gameId));
 
             if (round == null)

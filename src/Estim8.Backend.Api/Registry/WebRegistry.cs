@@ -1,3 +1,4 @@
+using Estim8.Backend.Api.Security;
 using Estim8.Backend.Commands.Registry;
 using Estim8.Backend.Queries.Registry;
 using Estim8.Messaging.Registry;
@@ -10,6 +11,8 @@ namespace Estim8.Backend.Api.Registry
     {
         public WebRegistry()
         {
+            For<ISecurityTokenService>().Use<SecurityTokenService>();
+            
             IncludeRegistry<QueryRegistry>();
             IncludeRegistry<CommandRegistry>();
             
