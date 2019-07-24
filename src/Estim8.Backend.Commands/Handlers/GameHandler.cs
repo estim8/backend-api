@@ -25,7 +25,7 @@ namespace Estim8.Backend.Commands.Handlers
                 PublicId = request.PublicId,
                 CardSetId = request.CardsetId, 
                 Secret = request.Secret,
-                DealerToken = request.DealerToken,
+                DealerId = request.PlayerId,
                 State = GameState.AwaitingPlayers,
             });
 

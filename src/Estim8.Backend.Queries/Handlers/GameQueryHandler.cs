@@ -26,7 +26,7 @@ namespace Estim8.Backend.Queries.Handlers
             return new Game
             {
                 Id = entity.Id,
-                PublicId = entity.PublicId,
+                DealerId = entity.DealerId,
                 CreatedTimestamp = entity.CreatedTimestamp,
                 State = Enum.Parse<GameState>(entity.State.ToString())
             };        

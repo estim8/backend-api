@@ -15,7 +15,7 @@ namespace Estim8.Backend.Persistence.Model
         [ProtoMember(5)] public DateTimeOffset EndedTimestamp { get; set; }
         [ProtoMember(8)] public string Secret { get; set; }
         [ProtoMember(9)] public GameState State { get; set; }
-        [ProtoMember(10)] public Guid DealerToken { get; set; }
+        [ProtoMember(10)] public Guid DealerId { get; set; }
     }
 
     public enum GameState
