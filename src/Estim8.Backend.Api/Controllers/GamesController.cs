@@ -63,7 +63,7 @@ namespace Estim8.Backend.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("")]
-        public async Task<ActionResult<IdResponse>> CreateGame(CreateGameRequest request)
+        public async Task<ActionResult<CreateGameResponse>> CreateGame(CreateGameRequest request)
         {
             var id = Guid.NewGuid();
             var playerId = Guid.NewGuid();
