@@ -2,13 +2,14 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Estim8.Backend.Commands.Commands;
+using Estim8.Backend.Commands.Exceptions;
 using Estim8.Backend.Commands.Services;
 using Estim8.Backend.Persistence.Model;
 using Estim8.Backend.Persistence.Repositories;
 
 namespace Estim8.Backend.Commands.Handlers
 {
-    public class GameHandler : ICommandHandler<CreateGame, SerializedSecurityToken>, ICommandHandler<StartGame>
+    public class GameHandler : ICommandHandler<CreateGame, SerializedSecurityToken>, ICommandHandler<StartGame>, ICommandHandler<EndGame>
     {
         private readonly IGameRepository _gameRepo;
         private readonly ISecurityTokenService _sts;
@@ -41,11 +42,24 @@ namespace Estim8.Backend.Commands.Handlers
             var game = await _gameRepo.GetById(request.GameId);
             
             if(game == null)
-                throw new NullReferenceException($"Game with id {request.GameId} was not found. Cannot start game.");
+                throw new DomainException(ErrorCode.GameNotFound, $"Game with id {request.GameId} was not found. Cannot start game.");
             
             await _gameRepo.SetGameState(request.GameId, GameState.Playing);
             
             return Response.Success;
+        }
+
+        public async Task<Response> Handle(EndGame request, CancellationToken cancellationToken)
+        {
+            var game = await _gameRepo.GetById(request.GameId);
+            
+            if(game == null)
+                throw new DomainException(ErrorCode.GameNotFound,$"Game with id {request.GameId} was not found. Cannot start game.");
+            
+            var t_op = await _gameRepo.SetGameTimestamp(request.GameId, DateTimeOffset.Now);
+            var s_op = await _gameRepo.SetGameState(request.GameId, GameState.Ended);
+            
+            return t_op && s_op ? Response.Success : Response.Failed(errorMessage:"Could not end game completely");
         }
     }
 }

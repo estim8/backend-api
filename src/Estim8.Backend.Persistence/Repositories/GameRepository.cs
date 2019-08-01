@@ -19,5 +19,10 @@ namespace Estim8.Backend.Persistence.Repositories
         {
             return await ModifyObjectInTransaction(ToKey(gameId), game => game.State = newState);
         }
+
+        public async Task<bool> SetGameTimestamp(Guid gameId, DateTimeOffset endedTimestamp)
+        {
+            return await ModifyObjectInTransaction(ToKey(gameId), game => game.EndedTimestamp = endedTimestamp);
+        }
     }
 }

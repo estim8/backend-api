@@ -110,8 +110,36 @@ namespace Estim8.Backend.Api.Controllers
 
             if (!result.IsSuccess)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
+            
+            await _gameHub.Clients.Group(gameId.ToString()).GameStarted(new GameMessage {GameId = gameId});
 
             return Ok();
         }
+        
+        /// <summary>
+        /// End a game
+        /// </summary>
+        /// <remarks>
+        /// Closes the game for new rounds
+        /// </remarks>
+        /// <param name="gameId">An active game ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles="Dealer")]
+        [Route("{gameId}/end")]
+        public async Task<IActionResult> EndGame(Guid gameId)
+        {
+            if (!IsInGame(gameId))
+                return Unauthorized();
+
+            var result = await _mediator.Send(new EndGame {GameId = gameId});
+
+            if (!result.IsSuccess)
+                return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
+
+            await _gameHub.Clients.Group(gameId.ToString()).GameEnded(new GameMessage {GameId = gameId});
+            
+            return Ok();
+        } 
     }
 }

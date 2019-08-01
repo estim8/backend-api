@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Estim8.Backend.Api.Hubs;
+using Estim8.Backend.Api.Hubs.Messages;
 using Estim8.Backend.Api.Model;
 using Estim8.Backend.Commands.Commands;
 using Estim8.Backend.Commands.Services;
@@ -12,6 +14,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
@@ -92,24 +95,5 @@ namespace Estim8.Backend.Api.Controllers
             
             return StatusCode(StatusCodes.Status501NotImplemented);
         }
-
-        /// <summary>
-        /// End a game
-        /// </summary>
-        /// <remarks>
-        /// Closes the game for new rounds
-        /// </remarks>
-        /// <param name="gameId">An active game ID</param>
-        /// <returns></returns>
-        [HttpPost]
-        [Authorize(Roles="Dealer")]
-        [Route("{gameId}/end")]
-        public async Task<IActionResult> EndGame(Guid gameId)
-        {
-            if (!IsInGame(gameId))
-                return Unauthorized();
-            
-            return StatusCode(StatusCodes.Status501NotImplemented);
-        } 
     }
 }
