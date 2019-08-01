@@ -6,6 +6,7 @@ using CachingFramework.Redis.Contracts;
 using CachingFramework.Redis.Contracts.RedisObjects;
 using Estim8.Backend.Persistence.Model;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
 namespace Estim8.Backend.Persistence.Repositories
 {
@@ -17,46 +18,46 @@ namespace Estim8.Backend.Persistence.Repositories
 
         public async Task AddRound(Guid gameId, Round round)
         {
-            await GetRounds(gameId).AddAsync(round);
+            await Redis.Cache.SetHashedAsync(ToHashKey(gameId), ToKey(round.Id), round);
         }
-
+        
         public async Task<Round> GetById(Guid gameId, Guid roundId)
         {
-            var rounds = await GetAllRounds(gameId);
-            return rounds.SingleOrDefault(x => x.Id == roundId);
-        }
-
-        public async Task Replace(Guid gameId, Guid roundId, Round round)
-        {
-            //TODO: Make this all serverside chained ops
-            var r = await GetById(gameId, roundId);
-
-            var persistedIdx = await GetRounds(gameId).IndexOfAsync(r);
-            await GetRounds(gameId).RemoveAtAsync(persistedIdx);
-            await GetRounds(gameId).InsertAsync(persistedIdx, round);
+            return await Redis.Cache.GetHashedAsync<Round>(ToHashKey(gameId), ToKey(roundId));
         }
 
         public async Task<Round> GetCurrentRound(Guid gameId)
         {
-            var q = await GetRounds(gameId).GetRangeAsync(-1);
-            return q.LastOrDefault();
+            var allRounds = await Redis.Cache.GetHashedAllAsync<Round>(ToHashKey(gameId));
+            return allRounds.Values.OrderByDescending(x => x.StartedTimestamp).FirstOrDefault(x => x.EndedTimestamp.HasValue);
+        }
+
+        public async Task UpdateRoundTimestamp(Guid gameId, Guid roundId, DateTimeOffset endedTimestamp)
+        {
+            var trans = Database.CreateTransaction();
+            var round = await Redis.Cache.GetHashedAsync<Round>(ToHashKey(gameId), ToKey(roundId));
+            
+            trans.AddCondition(Condition.HashEqual(ToHashKey(gameId), ToKey(roundId), Serializer.Serialize(round)));
+
+            round.EndedTimestamp = endedTimestamp;
+            trans.HashSetAsync(ToHashKey(gameId), ToKey(roundId), Serializer.Serialize(round));
+            
+            await trans.ExecuteAsync();
         }
 
         public async Task<IEnumerable<Round>> GetAllRounds(Guid gameId)
         {
-            var rounds = GetRounds(gameId);
-            return await rounds.GetRangeAsync();
+            return (await Redis.Cache.GetHashedAllAsync<Round>(ToHashKey(gameId))).Values;
         }
 
         public async Task Delete(Guid gameId, Guid roundId)
         {
-            var rounds = await GetAllRounds(gameId);
-            await GetRounds(gameId).RemoveAsync(rounds.Single(x => x.Id == roundId), 1);
+            await Redis.Cache.RemoveHashedAsync(ToHashKey(gameId), ToKey(roundId));
         }
 
-        private IRedisList<Round> GetRounds(Guid gameId)
+        private string ToHashKey(Guid gameId)
         {
-            return Redis.Collections.GetRedisList<Round>($"game:id:{gameId}:rounds");
+            return $"game:id:{gameId}:rounds:hash";
         }
     }
 }

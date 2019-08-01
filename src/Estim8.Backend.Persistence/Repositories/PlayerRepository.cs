@@ -33,7 +33,7 @@ namespace Estim8.Backend.Persistence.Repositories
         public async Task<IEnumerable<Player>> GetAllPlayersInGame(Guid gameId)
         {
             var result = await Redis.Cache.GetHashedAllAsync<Player>(ToHashKey(gameId));
-            return result.Select(x => x.Value);
+            return result.Values;
         }
 
         private string ToHashKey(Guid gameId)

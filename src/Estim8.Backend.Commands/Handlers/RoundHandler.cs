@@ -8,12 +8,12 @@ using Estim8.Backend.Persistence.Repositories;
 
 namespace Estim8.Backend.Commands.Handlers
 {
-    public class GameRoundHandler : ICommandHandler<AddGameRound>
+    public class RoundHandler : ICommandHandler<AddGameRound>
     {
         private readonly IRoundRepository _roundRepo;
         private readonly IRepository<Game> _gameRepo;
 
-        public GameRoundHandler(IRoundRepository roundRepo, IRepository<Game> gameRepo)
+        public RoundHandler(IRoundRepository roundRepo, IRepository<Game> gameRepo)
         {
             _roundRepo = roundRepo;
             _gameRepo = gameRepo;
@@ -27,8 +27,7 @@ namespace Estim8.Backend.Commands.Handlers
                 throw new DomainException(ErrorCode.GameNotFound, $"A game with id '{request.GameId}' was not found");
 
             var current = await _roundRepo.GetCurrentRound(request.GameId);
-            current.EndedTimestamp = DateTimeOffset.Now;
-            await _roundRepo.Replace(request.GameId, current.Id, current);
+            await _roundRepo.UpdateRoundTimestamp(request.GameId, current.Id, DateTimeOffset.Now);
             
             await _roundRepo.AddRound(request.GameId, new Round
             {
