@@ -24,5 +24,19 @@ namespace Estim8.Backend.Commands.Commands
                 ErrorMessage = errorMessage
             };
         }
+        
+        public static Response<T> FromResult<T>(T message)
+        {
+            return new Response<T>
+            {
+                Message = message,
+                IsSuccess = true
+            };
+        }
+    }
+
+    public class Response<T> : Response
+    {
+        public T Message { get; set; }
     }
 }

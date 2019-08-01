@@ -4,8 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Estim8.Backend.Api.Model;
-using Estim8.Backend.Api.Security;
 using Estim8.Backend.Commands.Commands;
+using Estim8.Backend.Commands.Services;
 using Estim8.Backend.Queries;
 using Estim8.Backend.Queries.Model;
 using MediatR;
@@ -71,17 +71,15 @@ namespace Estim8.Backend.Api.Controllers
 
             if (!result.IsSuccess)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
-
-            var token = _tokenService.IssueToken(id, playerId, new []{PlayerRoles.Dealer.ToString()});
             
             return CreatedAtAction(nameof(GetGame), new {gameId = id}, new CreateGameResponse(id)
             {
                 PlayerId = playerId,
                 Token = new AccessToken
                 {
-                    Access_Token = token,
-                    Token_Type = "Bearer",
-                    Expires_In = 3600
+                    Access_Token = result.Message.Token,
+                    Token_Type = result.Message.Type,
+                    Expires_In = result.Message.Expires
                 }                
             });
         }

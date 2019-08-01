@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Estim8.Backend.Api.Hubs;
 using Estim8.Backend.Api.Hubs.Messages;
 using Estim8.Backend.Api.Model;
-using Estim8.Backend.Api.Security;
+using Estim8.Backend.Commands.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -44,8 +44,6 @@ namespace Estim8.Backend.Api.Controllers
             var playerId = Guid.NewGuid();
             await _gameHub.Clients.All.PlayerAddedToGame(new PlayerMessage{GameId = gameId, PlayerId = playerId});
 
-            var token = _securityTokenService.IssueToken(gameId, playerId, new[] {PlayerRoles.Player.ToString()});
-            
             return Ok(new AddPlayerToGameResponse
             {
                 PlayerId = playerId,

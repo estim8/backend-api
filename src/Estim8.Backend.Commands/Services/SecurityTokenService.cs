@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Estim8.Backend.Api.Security
+namespace Estim8.Backend.Commands.Services
 {
     public interface ISecurityTokenService
     {
-        string IssueToken(Guid gameId, Guid playerId, string[] roles);
+        SerializedSecurityToken IssueToken(Guid gameId, Guid playerId, string[] roles);
     }
 
     public class SecurityTokenService : ISecurityTokenService
@@ -22,7 +20,7 @@ namespace Estim8.Backend.Api.Security
             _configuration = configuration;
         }
 
-        public string IssueToken(Guid gameId, Guid playerId, string[] roles)
+        public SerializedSecurityToken IssueToken(Guid gameId, Guid playerId, string[] roles)
         {
             var signingKey = Convert.FromBase64String(_configuration["Jwt:SigningSecret"]);
             var expiryDuration = int.Parse(_configuration["Jwt:ExpiryDuration"]);
@@ -44,7 +42,12 @@ namespace Estim8.Backend.Api.Security
             };
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
-            return jwtTokenHandler.WriteToken(jwtToken);
+            return new SerializedSecurityToken
+            {
+                Token = jwtTokenHandler.WriteToken(jwtToken),
+                Expires = expiryDuration,
+                Type = "Bearer"
+            };
         }
     }
 }

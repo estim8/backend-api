@@ -2,21 +2,24 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Estim8.Backend.Commands.Commands;
+using Estim8.Backend.Commands.Services;
 using Estim8.Backend.Persistence.Model;
 using Estim8.Backend.Persistence.Repositories;
 
 namespace Estim8.Backend.Commands.Handlers
 {
-    public class GameHandler : ICommandHandler<CreateGame>, ICommandHandler<StartGame>
+    public class GameHandler : ICommandHandler<CreateGame, SerializedSecurityToken>, ICommandHandler<StartGame>
     {
         private readonly IGameRepository _gameRepo;
+        private readonly ISecurityTokenService _sts;
 
-        public GameHandler(IGameRepository gameRepo)
+        public GameHandler(IGameRepository gameRepo, ISecurityTokenService sts)
         {
             _gameRepo = gameRepo;
+            _sts = sts;
         }
 
-        public async Task<Response> Handle(CreateGame request, CancellationToken cancellationToken)
+        public async Task<Response<SerializedSecurityToken>> Handle(CreateGame request, CancellationToken cancellationToken)
         {
             await _gameRepo.Upsert(new Game
             {
@@ -28,8 +31,10 @@ namespace Estim8.Backend.Commands.Handlers
                 DealerId = request.PlayerId,
                 State = GameState.AwaitingPlayers,
             });
+            
+            var token = _sts.IssueToken(request.Id, request.PlayerId, new []{PlayerRoles.Dealer.ToString()});
 
-            return Response.Success;
+            return Response.FromResult(token);
         }
 
         public async Task<Response> Handle(StartGame request, CancellationToken cancellationToken)
