@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Estim8.Backend.Api.Hubs;
+using Estim8.Backend.Api.Hubs.Messages;
 using Estim8.Backend.Api.Model;
 using Estim8.Backend.Commands.Commands;
 using MediatR;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Estim8.Backend.Api.Controllers
 {
@@ -19,10 +22,12 @@ namespace Estim8.Backend.Api.Controllers
     public class PlayController : ApiControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IHubContext<GameHub, IPlayerClient> _gameHub;
 
-        public PlayController(IMediator mediator)
+        public PlayController(IMediator mediator, IHubContext<GameHub, IPlayerClient> gameHub)
         {
             _mediator = mediator;
+            _gameHub = gameHub;
         }
         
         /// <summary>
@@ -36,10 +41,24 @@ namespace Estim8.Backend.Api.Controllers
         [HttpPost]
         [Authorize(Roles = "Player")]
         [Route("{gameId}/rounds/current/playedCard")]
-        public async Task<IActionResult> PlayCard(Guid gameId)
+        public async Task<IActionResult> PlayCard(Guid gameId, PlayCardRequest request)
         {
             if (!IsInGame(gameId))
                 return Unauthorized();
+
+            var response = await _mediator.Send(new PlayCard
+                {GameId = gameId, PlayerId = this.PlayerId, Type = request.CardType, Value = request.Value});
+
+            if (!response.IsSuccess)
+                return StatusCode(StatusCodes.Status500InternalServerError, response.ErrorMessage);
+
+            await _gameHub.Clients.Group(gameId.ToString()).CardPlayed(new PlayedCardMessage
+            {
+                Action = PlayedCardMessage.CardAction.Play,
+                CardType = request.CardType,
+                CardValue = request.Value,
+                PlayerId = this.PlayerId
+            });
             
             return Ok();
         }
@@ -57,6 +76,17 @@ namespace Estim8.Backend.Api.Controllers
             if (!IsInGame(gameId))
                 return Unauthorized();
 
+            var response = await _mediator.Send(new CancelCard
+                {GameId = gameId, PlayerId = this.PlayerId});
+
+            if (!response.IsSuccess)
+                return StatusCode(StatusCodes.Status500InternalServerError, response.ErrorMessage);
+
+            await _gameHub.Clients.Group(gameId.ToString()).CardPlayed(new PlayedCardMessage
+            {
+                Action = PlayedCardMessage.CardAction.Cancel,
+                PlayerId = this.PlayerId
+            });
             return Ok();
         }
         

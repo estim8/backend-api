@@ -31,13 +31,13 @@ namespace Estim8.Backend.Commands.Handlers
             if(playerInGame == null)
                 throw new DomainException(ErrorCode.NotAuthorized);
 
-            var validValues = new []{0, 0.5, 1, 2, 3, 5, 8, 13, 20, 50, 100, -1};
+            var validValues = new []{0, 0.5, 1, 2, 3, 5, 8, 13, 20, 50, 100};
             var validTypes = new[] {"Infinite", "Break", "Number"};
             
             if(!validTypes.Contains(request.Type))
                 throw new DomainException(ErrorCode.InputNotAllowed, $"Card type is not in allowed range. Must be in [{string.Join(", ", validTypes)}]");
             
-            if(!validValues.Contains(request.Value))
+            if(request.Value.HasValue && !validValues.Contains(request.Value.Value))
                 throw new DomainException(ErrorCode.InputNotAllowed, $"Card value is not in allowed range. Must be in [{string.Join(", ", validValues)}]");
             
             var currentRound = await _roundRepository.GetCurrentRound(request.GameId);

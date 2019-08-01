@@ -10,7 +10,7 @@ namespace Estim8.Backend.Persistence.Model
         [ProtoMember(2)] public Guid GameRoundId { get; set; }
         [ProtoMember(3)] public Guid PlayerId { get; set; }
         [ProtoMember(4)] public string CardType { get; set; }
-        [ProtoMember(5)] public double CardValue { get; set; }
+        [ProtoMember(5)] public double? CardValue { get; set; }
         [ProtoMember(6)] public DateTimeOffset PlayedTimestamp { get; set; }
     }
 }

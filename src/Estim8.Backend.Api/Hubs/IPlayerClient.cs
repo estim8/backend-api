@@ -9,5 +9,7 @@ namespace Estim8.Backend.Api.Hubs
     {
         Task PlayerAddedToGame(PlayerMessage player);
         Task PlayerRemovedFromGame(PlayerMessage player);
+        Task CardPlayed(PlayedCardMessage card);
+        
     }
 }
