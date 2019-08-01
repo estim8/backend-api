@@ -25,12 +25,10 @@ namespace Estim8.Backend.Api.Controllers
     public class GamesController : ApiControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ISecurityTokenService _tokenService;
 
-        public GamesController(IMediator mediator, ISecurityTokenService tokenService)
+        public GamesController(IMediator mediator)
         {
             _mediator = mediator;
-            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -75,12 +73,7 @@ namespace Estim8.Backend.Api.Controllers
             return CreatedAtAction(nameof(GetGame), new {gameId = id}, new CreateGameResponse(id)
             {
                 PlayerId = playerId,
-                Token = new AccessToken
-                {
-                    Access_Token = result.Message.Token,
-                    Token_Type = result.Message.Type,
-                    Expires_In = result.Message.Expires
-                }                
+                Token = new AccessToken(result.Message)             
             });
         }
 

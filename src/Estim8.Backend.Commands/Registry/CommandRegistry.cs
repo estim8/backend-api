@@ -18,6 +18,7 @@ namespace Estim8.Backend.Commands.Registry
             {
                 x.AssemblyContainingType<CommandRegistry>();
                 x.ConnectImplementationsToTypesClosing(typeof(ICommandHandler<>));
+                x.ConnectImplementationsToTypesClosing(typeof(ICommandHandler<,>));
             });
             
             For(typeof(ICommandHandler<>)).DecorateAllWith(typeof(ExceptionResponseDecorator<>));

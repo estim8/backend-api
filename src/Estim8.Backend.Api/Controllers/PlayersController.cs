@@ -3,9 +3,13 @@ using System.Threading.Tasks;
 using Estim8.Backend.Api.Hubs;
 using Estim8.Backend.Api.Hubs.Messages;
 using Estim8.Backend.Api.Model;
+using Estim8.Backend.Commands.Commands;
 using Estim8.Backend.Commands.Services;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Estim8.Backend.Api.Controllers
@@ -18,12 +22,12 @@ namespace Estim8.Backend.Api.Controllers
     public class PlayersController : ApiControllerBase
     {
         private readonly IHubContext<GameHub, IPlayerClient> _gameHub;
-        private readonly ISecurityTokenService _securityTokenService;
+        private readonly IMediator _mediator;
 
-        public PlayersController(IHubContext<GameHub, IPlayerClient> gameHub, ISecurityTokenService securityTokenService)
+        public PlayersController(IHubContext<GameHub, IPlayerClient> gameHub, IMediator mediator)
         {
             _gameHub = gameHub;
-            _securityTokenService = securityTokenService;
+            _mediator = mediator;
         }
         
         /// <summary>
@@ -42,17 +46,21 @@ namespace Estim8.Backend.Api.Controllers
         public async Task<ActionResult<AddPlayerToGameResponse>> AddPlayer(Guid gameId, AddPlayerToGameRequest request)
         {
             var playerId = Guid.NewGuid();
+
+            var result = await _mediator.Send(new AddPlayer
+            {
+                GameId = gameId, PlayerId = playerId, GameSecret = request.Secret
+            });
+
+            if (!result.IsSuccess)
+                return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
+            
             await _gameHub.Clients.All.PlayerAddedToGame(new PlayerMessage{GameId = gameId, PlayerId = playerId});
 
             return Ok(new AddPlayerToGameResponse
             {
                 PlayerId = playerId,
-                Token = new AccessToken
-                {
-                    Access_Token = token,
-                    Token_Type = "Bearer",
-                    Expires_In = 3600
-                }
+                Token = new AccessToken(result.Message)
             });
         }
 
@@ -75,6 +83,11 @@ namespace Estim8.Backend.Api.Controllers
 
             if (playerId != this.PlayerId && !User.IsInRole("Dealer"))
                 return Forbid();
+
+            var result = await _mediator.Send(new RemovePlayer {GameId = gameId, PlayerId = playerId});
+
+            if (!result.IsSuccess)
+                return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
             
             await _gameHub.Clients.All.PlayerRemovedFromGame(new PlayerMessage{GameId = gameId, PlayerId = playerId});
             

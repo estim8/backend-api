@@ -7,7 +7,7 @@ using Estim8.Backend.Persistence.Repositories;
 
 namespace Estim8.Backend.Commands.Handlers
 {
-    public class PlayerHandler : ICommandHandler<AddPlayer, SerializedSecurityToken>
+    public class PlayerHandler : ICommandHandler<AddPlayer, SerializedSecurityToken>, ICommandHandler<RemovePlayer>
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IGameRepository _gameRepository;
@@ -32,6 +32,18 @@ namespace Estim8.Backend.Commands.Handlers
             var token = _sts.IssueToken(request.GameId, request.PlayerId, new []{PlayerRoles.Player.ToString()});
 
             return Response.FromResult(token);
+        }
+
+        public async Task<Response> Handle(RemovePlayer request, CancellationToken cancellationToken)
+        {
+            var game = await _gameRepository.GetById(request.GameId);
+            
+            if(game == null)
+                throw new DomainException(ErrorCode.GameNotFound);
+
+            await _playerRepository.DeletePlayer(request.GameId, request.PlayerId);
+            
+            return Response.Success;
         }
     }
 }
