@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.TestInfrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Queries.UnitTests", "tst\Estim8.Backend.Queries.UnitTests\Estim8.Backend.Queries.UnitTests.csproj", "{1FB931E8-632E-4727-BB29-3B0B7D22AC26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Api.UnitTests", "Estim8.Backend.Api.UnitTests\Estim8.Backend.Api.UnitTests.csproj", "{986217B8-8E6C-4355-95D5-4F22091B5E55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Api.UnitTests", "tst\Estim8.Backend.Api.UnitTests\Estim8.Backend.Api.UnitTests.csproj", "{986217B8-8E6C-4355-95D5-4F22091B5E55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
