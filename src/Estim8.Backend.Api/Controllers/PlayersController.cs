@@ -55,7 +55,7 @@ namespace Estim8.Backend.Api.Controllers
             if (!result.IsSuccess)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
             
-            await _gameHub.Clients.All.PlayerAddedToGame(new PlayerMessage{GameId = gameId, PlayerId = playerId});
+            await _gameHub.Clients.Groups(gameId.ToString()).PlayerAddedToGame(new PlayerMessage{GameId = gameId, PlayerId = playerId});
 
             return Ok(new AddPlayerToGameResponse
             {
@@ -89,7 +89,7 @@ namespace Estim8.Backend.Api.Controllers
             if (!result.IsSuccess)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);
             
-            await _gameHub.Clients.All.PlayerRemovedFromGame(new PlayerMessage{GameId = gameId, PlayerId = playerId});
+            await _gameHub.Clients.Groups(gameId.ToString()).PlayerRemovedFromGame(new PlayerMessage{GameId = gameId, PlayerId = playerId});
             
             return Ok();
         }
