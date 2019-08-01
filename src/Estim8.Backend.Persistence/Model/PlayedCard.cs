@@ -1,13 +1,16 @@
 using System;
+using ProtoBuf;
 
 namespace Estim8.Backend.Persistence.Model
 {
-    public class PlayedCard : Entity
+    [ProtoContract]
+    public class PlayedCard
     {
-        public Guid GameId { get; set; }
-        public Guid GameRoundId { get; set; }
-        public Guid PlayerId { get; set; }
-        public int CardValue { get; set; }
-        public DateTimeOffset PlayedTimestamp { get; set; }
+        [ProtoMember(1)] public Guid GameId { get; set; }
+        [ProtoMember(2)] public Guid GameRoundId { get; set; }
+        [ProtoMember(3)] public Guid PlayerId { get; set; }
+        [ProtoMember(4)] public string CardType { get; set; }
+        [ProtoMember(5)] public double CardValue { get; set; }
+        [ProtoMember(6)] public DateTimeOffset PlayedTimestamp { get; set; }
     }
 }

@@ -47,6 +47,7 @@ namespace Estim8.Backend.Persistence.Registry
             For<IRoundRepository>().Use<RoundRepository>();
             For<IGameRepository>().Use<GameRepository>();
             For<IPlayerRepository>().Use<PlayerRepository>();
+            For<IPlayCardRepository>().Use<PlayCardRepository>();
             
 //            For(typeof(IRepository<>)).DecorateAllWith(typeof(RepositoryLogDecorator<>));
             For<ILogger>().Use(Log.Logger);

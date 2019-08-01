@@ -9,7 +9,6 @@ namespace Estim8.Backend.Persistence.Model
     [ProtoInclude(12, typeof(Player))]
     public abstract class Entity
     {
-        [ProtoMember(1)]
-        public Guid Id { get; set; }
+        [ProtoMember(1)] public Guid Id { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace Estim8.Backend.Commands.Exceptions
     public enum ErrorCode : int
     {
         GameNotFound = 1000,
+        InputNotAllowed = 2000,
         NotAuthorized = 3000,
     }
 }
