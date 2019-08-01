@@ -28,7 +28,7 @@ namespace Estim8.Backend.Persistence.UnitTests
             var sut = fixture.Create<GameRepository>();
 
             //Act
-            var answer = await sut.Delete(gameId);
+            var answer = await ((IGameRepository)sut).Delete(gameId);
 
             //Assert
             answer.ShouldBe(true, "Redis should acknowledge the delete");
@@ -45,7 +45,7 @@ namespace Estim8.Backend.Persistence.UnitTests
             var sut = fixture.Create<GameRepository>();
             
             //Act
-            await sut.Upsert(game);
+            await ((IGameRepository)sut).Upsert(game);
 
             //Assert
             redisCacheProviderMock.Verify(x => x.SetObjectAsync(sut.ToKey(game.Id, null), game, It.IsAny<TimeSpan?>(), It.IsAny<When>()), Times.Once);

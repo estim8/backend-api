@@ -9,7 +9,7 @@ using StackExchange.Redis.Extensions.Core.Abstractions;
 
 namespace Estim8.Backend.Persistence.Repositories
 {
-    public class GameRepository : RedisHashRepository<Game>, IGameRepository
+    public class GameRepository : RedisRepository<Game>, IGameRepository
     {
         public GameRepository(IContext redisContext, ISerializer serializer, ILoggerFactory loggerFactory) : base(redisContext, serializer, loggerFactory)
         {

@@ -8,4 +8,10 @@ namespace Estim8.Backend.Commands.Handlers
     {
         
     }
+    
+    public interface ICommandHandler<TCommand, TResponse> : IRequestHandler<TCommand, Response<TResponse>>
+        where TCommand : IRequest<Response<TResponse>>
+    {
+        
+    }
 }
