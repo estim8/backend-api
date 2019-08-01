@@ -65,7 +65,7 @@ namespace Estim8.Backend.Api.Controllers
         {
             var id = Guid.NewGuid();
             var playerId = Guid.NewGuid();
-            var result = await _mediator.Send(new CreateGame {Id = id, Secret = request.Secret, PlayerId = playerId, CardsetId = request.CardSetId});
+            var result = await _mediator.Send(new CreateGame {Id = id, Secret = request.Secret, PlayerId = playerId});
 
             if (!result.IsSuccess)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.ErrorMessage);

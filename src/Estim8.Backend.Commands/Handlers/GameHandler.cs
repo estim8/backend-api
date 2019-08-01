@@ -26,7 +26,6 @@ namespace Estim8.Backend.Commands.Handlers
                 Id = request.Id, 
                 CreatedTimestamp = DateTimeOffset.Now, 
                 PublicId = request.PublicId,
-                CardSetId = request.CardsetId, 
                 Secret = request.Secret,
                 DealerId = request.PlayerId,
                 State = GameState.AwaitingPlayers,

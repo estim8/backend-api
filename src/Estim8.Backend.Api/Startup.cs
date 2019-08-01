@@ -57,7 +57,6 @@ namespace Estim8.Backend.Api
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
 
-            //services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
             services.AddSignalR();
             
             services.AddSwaggerConfiguration();

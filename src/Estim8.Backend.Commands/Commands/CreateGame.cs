@@ -9,7 +9,6 @@ namespace Estim8.Backend.Commands.Commands
         public Guid Id { get; set; }
         public string Secret { get; set; }
         public string PublicId { get; set; }
-        public Guid CardsetId { get; set; }
         public Guid PlayerId { get; set; }
     }
 }
