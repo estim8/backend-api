@@ -6,5 +6,7 @@ namespace Estim8.Backend.Api.Hubs.Messages
     {
         public Guid GameId { get; set; }
         public Guid PlayerId { get; set; }
+        public string PlayerName { get; set; }
+        public string Gravatar { get; set; }
     }
 }

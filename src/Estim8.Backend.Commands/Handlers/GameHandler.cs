@@ -12,11 +12,13 @@ namespace Estim8.Backend.Commands.Handlers
     public class GameHandler : ICommandHandler<CreateGame, SerializedSecurityToken>, ICommandHandler<StartGame>, ICommandHandler<EndGame>
     {
         private readonly IGameRepository _gameRepo;
+        private readonly IPlayerRepository _playerRepo;
         private readonly ISecurityTokenService _sts;
 
-        public GameHandler(IGameRepository gameRepo, ISecurityTokenService sts)
+        public GameHandler(IGameRepository gameRepo, IPlayerRepository playerRepo, ISecurityTokenService sts)
         {
             _gameRepo = gameRepo;
+            _playerRepo = playerRepo;
             _sts = sts;
         }
 
@@ -31,6 +33,8 @@ namespace Estim8.Backend.Commands.Handlers
                 DealerId = request.PlayerId,
                 State = GameState.AwaitingPlayers,
             });
+
+            await _playerRepo.AddPlayer(request.Id, request.PlayerId, request.PlayerName, request.Gravatar);
             
             var token = _sts.IssueToken(request.Id, request.PlayerId, new []{PlayerRoles.Dealer.ToString()});
 

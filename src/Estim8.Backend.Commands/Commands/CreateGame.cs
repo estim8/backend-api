@@ -10,5 +10,7 @@ namespace Estim8.Backend.Commands.Commands
         public string Secret { get; set; }
         public string PublicId { get; set; }
         public Guid PlayerId { get; set; }
+        public string PlayerName { get; set; }
+        public string Gravatar { get; set; }
     }
 }

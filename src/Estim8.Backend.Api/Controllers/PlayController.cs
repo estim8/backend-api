@@ -37,6 +37,7 @@ namespace Estim8.Backend.Api.Controllers
         /// If a card has already been played, it is replaced with the new card
         /// </remarks>
         /// <param name="gameId">An active game ID</param>
+        /// <param name="request">The card played</param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Player")]

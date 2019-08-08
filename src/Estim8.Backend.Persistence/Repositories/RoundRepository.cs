@@ -40,7 +40,10 @@ namespace Estim8.Backend.Persistence.Repositories
             trans.AddCondition(Condition.HashEqual(ToHashKey(gameId), ToKey(roundId), Serializer.Serialize(round)));
 
             round.EndedTimestamp = endedTimestamp;
+            
+#pragma warning disable 4014
             trans.HashSetAsync(ToHashKey(gameId), ToKey(roundId), Serializer.Serialize(round));
+#pragma warning restore 4014
             
             await trans.ExecuteAsync();
         }

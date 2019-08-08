@@ -27,7 +27,7 @@ namespace Estim8.Backend.Commands.Handlers
             if(game.Secret != request.GameSecret)
                 throw new DomainException(ErrorCode.NotAuthorized, "Game secret does not match");
             
-            await _playerRepository.AddPlayer(request.GameId, request.PlayerId);
+            await _playerRepository.AddPlayer(request.GameId, request.PlayerId, request.PlayerName, request.Gravatar);
             
             var token = _sts.IssueToken(request.GameId, request.PlayerId, new []{PlayerRoles.Player.ToString()});
 

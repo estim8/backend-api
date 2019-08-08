@@ -15,9 +15,9 @@ namespace Estim8.Backend.Persistence.Repositories
             
         }
         
-        public async Task AddPlayer(Guid gameId, Guid playerId)
+        public async Task AddPlayer(Guid gameId, Guid playerId, string playerName, string gravatar)
         {
-            await Redis.Cache.SetHashedAsync(ToHashKey(gameId), ToKey(playerId), new Player{Id = playerId});
+            await Redis.Cache.SetHashedAsync(ToHashKey(gameId), ToKey(playerId), new Player{Id = playerId, PlayerName = playerName, Email = gravatar});
         }
 
         public async Task DeletePlayer(Guid gameId, Guid playerId)

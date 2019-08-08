@@ -49,7 +49,7 @@ namespace Estim8.Backend.Api.Controllers
 
             var result = await _mediator.Send(new AddPlayer
             {
-                GameId = gameId, PlayerId = playerId, GameSecret = request.Secret
+                GameId = gameId, PlayerId = playerId, GameSecret = request.Secret, Gravatar = request.Gravatar, PlayerName = request.PlayerName
             });
 
             if (!result.IsSuccess)
