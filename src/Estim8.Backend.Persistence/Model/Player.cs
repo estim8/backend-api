@@ -4,6 +4,5 @@ namespace Estim8.Backend.Persistence.Model
     {
         public string Email { get; set; }
         public string PlayerName { get; set; }
-        public string ImageUrl { get; set; }
     }
 }
