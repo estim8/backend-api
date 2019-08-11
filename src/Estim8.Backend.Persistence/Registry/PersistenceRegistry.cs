@@ -44,6 +44,7 @@ namespace Estim8.Backend.Persistence.Registry
                 x.ConnectImplementationsToTypesClosing(typeof(IRepository<>));
                 x.RegisterConcreteTypesAgainstTheFirstInterface();
             });
+            For<IRepository>().Use<RedisRepository>();
             For<IRoundRepository>().Use<RoundRepository>();
             For<IGameRepository>().Use<GameRepository>();
             For<IPlayerRepository>().Use<PlayerRepository>();

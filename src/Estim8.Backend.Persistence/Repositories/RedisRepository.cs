@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using CachingFramework.Redis;
 using CachingFramework.Redis.Contracts;
@@ -12,24 +13,37 @@ using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Estim8.Backend.Persistence.Repositories
 {
-    public abstract class RedisRepository<T> : IRepository<T>
+    public class RedisRepository : IRepository
     {
         protected IContext Redis;
-        protected ILogger Logger;
         protected IDatabase Database;
         protected ISerializer Serializer;
 
-        protected RedisRepository(IContext redisContext, ISerializer serializer, ILoggerFactory loggerFactory)
+        public RedisRepository(IContext redisContext, ISerializer serializer)
         {
             Redis = redisContext;
             Serializer = serializer;
-            Logger = loggerFactory.CreateLogger<RedisRepository<T>>();
             Database = Redis.GetConnectionMultiplexer().GetDatabase();
 
-            var redisLatency = Database.Ping(CommandFlags.DemandMaster);
+        }
+        public TimeSpan PingConnection()
+        {
+            return Database.Ping(CommandFlags.DemandMaster);
+        } 
+    }
+    
+    public abstract class RedisRepository<T> : RedisRepository, IRepository<T>
+    {
+        protected ILogger Logger;
+        
+        protected RedisRepository(IContext redisContext, ISerializer serializer, ILoggerFactory loggerFactory) : base(redisContext, serializer)
+        {
+            Logger = loggerFactory.CreateLogger<RedisRepository<T>>();
+                        
+            var redisLatency = PingConnection();
             Logger.LogInformation("Redis {EntityName} repository ready. Connection is {ConnectionStatus}. Latency is {RedisLatency}", typeof(T).Name, redisLatency != TimeSpan.Zero ? "CONNECTED" : "DISCONNECTED", redisLatency);
         }
-
+        
         protected async Task<bool> ModifyObjectInTransaction(string key, Action<T> mutate)
         {
             var tran = Database.CreateTransaction();
