@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  integration-tests:
+    image: 'estim8-solution-base'
+    entrypoint: dotnet test --filter IntegrationTest --logger trx --results-directory /var/tmp
+    environment:
+      - ApiEndpoint=http://backend-api:5000
+      - ConnectionStrings:RedisConnection=estim8-redis,defaultDatabase=0,ssl=false
+    volumes:
+      - /tmp:/var/tmp
+    networks:
+      - backend
+    depends_on:
+      - estim8-solution-base
+      - backend-api
+      - redis
+
+  accept-tests:
+    image: 'estim8-solution-base'
+    entrypoint: dotnet test ./tst/Estim8.AcceptanceTests/Estim8.AcceptanceTests.csproj --logger trx --results-directory /var/tmp
+    environment:
+      - ApiEndpoint=http://backend-api:5000
+      - ConnectionStrings:RedisConnection=estim8-redis,defaultDatabase=0,ssl=false
+    volumes:
+      - /tmp:/var/tmp
+    networks:
+      - backend
+    depends_on:
+      - estim8-solution-base
+      - backend-api
+      - redis
+
+networks: 
+  backend:

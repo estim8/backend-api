@@ -1,25 +1,38 @@
 version: '3'
 services:
+
+  estim8-solution-base:
+    image: 'estim8-solution-base'
+    build: 
+      context: .
+      dockerfile: Dockerfile.base
+    
   backend-api:
-    container_name: 'estim8-backend'
+    image: 'estim8-backend'
     build:
       context: .
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - PersistenceConfiguration:RedisConfiguration:Hosts:0:Host=estim8-redis
-      - PersistenceConfiguration:RedisConfiguration:Hosts:0:Port=6379
+      - ConnectionStrings:RedisConnection=estim8-redis,defaultDatabase=0,ssl=false
     ports: ['33000:5000']
     networks: 
       - backend
     depends_on: 
+      - 'estim8-solution-base'
       - 'redis'
+    logging:
+      driver: "none"
+
+
   redis:
     container_name: 'estim8-redis'
     ports: ['6379']
     image: 'redis:alpine'
     networks: 
       - backend
+    logging:
+      driver: "none"
 
 networks: 
   backend:
