@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using Estim8.Backend.Api.Configurations;
+using Estim8.Backend.Api.Health;
 using Estim8.Backend.Api.Hubs;
 using Estim8.Backend.Persistence;
 using Lamar;
@@ -46,6 +47,10 @@ namespace Estim8.Backend.Api
         {
             services.AddOptions();
             services.Configure<PersistenceConfiguration>(_config.GetSection(nameof(PersistenceConfiguration)));
+
+            services.AddHealthChecks()
+                .AddCheck<ContainerHealthCheck>("ioc")
+                .AddCheck<DatabaseHealthCheck>("database");
             
             services.AddAuthenticationConfiguration(_config);
             
@@ -78,6 +83,8 @@ namespace Estim8.Backend.Api
                 app.UseHsts();
             }
 
+            app.UseHealthChecks("/health");
+            
             app.UseAuthentication();
             
             app.UseStaticFiles();
