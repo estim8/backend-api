@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Queries.Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.Backend.Api.UnitTests", "tst\Estim8.Backend.Api.UnitTests\Estim8.Backend.Api.UnitTests.csproj", "{986217B8-8E6C-4355-95D5-4F22091B5E55}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AcceptTests", "AcceptTests", "{27C64B2A-B3CB-4AF7-9A8C-023E12EECA92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estim8.AcceptanceTests", "tst\Estim8.AcceptanceTests\Estim8.AcceptanceTests.csproj", "{81ECCB20-D09A-489D-A17B-C66EAB5280F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,11 +67,18 @@ Global
 		{986217B8-8E6C-4355-95D5-4F22091B5E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{986217B8-8E6C-4355-95D5-4F22091B5E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{986217B8-8E6C-4355-95D5-4F22091B5E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81ECCB20-D09A-489D-A17B-C66EAB5280F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81ECCB20-D09A-489D-A17B-C66EAB5280F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81ECCB20-D09A-489D-A17B-C66EAB5280F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81ECCB20-D09A-489D-A17B-C66EAB5280F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82A7EAA2-F8A2-493B-B448-6A35108F5956}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81ECCB20-D09A-489D-A17B-C66EAB5280F3} = {27C64B2A-B3CB-4AF7-9A8C-023E12EECA92}
 	EndGlobalSection
 EndGlobal
